@@ -32,34 +32,34 @@ jobs:
       run: |
         echo "Retrieving secrets from Azure Key Vault..."
         python - <<EOF
-import os
-from azure.identity import DefaultAzureCredential
-from azure.keyvault.secrets import SecretClient
+        import os
+        from azure.identity import DefaultAzureCredential
+        from azure.keyvault.secrets import SecretClient
 
-key_vault_name = os.getenv("AZURE_KEY_VAULT_NAME")
-key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
+        key_vault_name = os.getenv("AZURE_KEY_VAULT_NAME")
+        key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
 
-credential = DefaultAzureCredential()
-client = SecretClient(vault_url=key_vault_uri, credential=credential)
+        credential = DefaultAzureCredential()
+        client = SecretClient(vault_url=key_vault_uri, credential=credential)
 
-databricks_host = client.get_secret("cdv-big-data-adb-url").value
-databricks_token = client.get_secret("cdv-big-data-adb-token").value
-git_repo_url = client.get_secret("cdv-big-data-git-url").value
-git_branch = client.get_secret("cdv-big-data-git-branch").value
+        databricks_host = client.get_secret("cdv-big-data-adb-url").value
+        databricks_token = client.get_secret("cdv-big-data-adb-token").value
+        git_repo_url = client.get_secret("cdv-big-data-git-url").value
+        git_branch = client.get_secret("cdv-big-data-git-branch").value
 
-with open(os.getenv("GITHUB_ENV"), "a") as env_file:
-    env_file.write(f"DATABRICKS_HOST={databricks_host}\n")
-    env_file.write(f"DATABRICKS_TOKEN={databricks_token}\n")
-    env_file.write(f"GIT_REPO_URL={git_repo_url}\n")
-    env_file.write(f"GIT_BRANCH={git_branch}\n")
-EOF
+      with open(os.getenv("GITHUB_ENV"), "a") as env_file:
+          env_file.write(f"DATABRICKS_HOST={databricks_host}\n")
+          env_file.write(f"DATABRICKS_TOKEN={databricks_token}\n")
+          env_file.write(f"GIT_REPO_URL={git_repo_url}\n")
+          env_file.write(f"GIT_BRANCH={git_branch}\n")
+      EOF
 
     - name: Configure Databricks CLI
       run: |
         databricks configure --token <<EOF
-${{ env.DATABRICKS_HOST }}
-${{ env.DATABRICKS_TOKEN }}
-EOF
+          ${{ env.DATABRICKS_HOST }}
+          ${{ env.DATABRICKS_TOKEN }}
+          EOF
 
     - name: Clone Git repository
       run: |
