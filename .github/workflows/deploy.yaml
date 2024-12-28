@@ -47,12 +47,12 @@ jobs:
         git_repo_url = client.get_secret("cdv-big-data-git-url").value
         git_branch = client.get_secret("cdv-big-data-git-branch").value
 
-      with open(os.getenv("GITHUB_ENV"), "a") as env_file:
-          env_file.write(f"DATABRICKS_HOST={databricks_host}\n")
-          env_file.write(f"DATABRICKS_TOKEN={databricks_token}\n")
-          env_file.write(f"GIT_REPO_URL={git_repo_url}\n")
-          env_file.write(f"GIT_BRANCH={git_branch}\n")
-          EOF
+        with open(os.getenv("GITHUB_ENV"), "a") as env_file:
+            env_file.write(f"DATABRICKS_HOST={databricks_host}\n")
+            env_file.write(f"DATABRICKS_TOKEN={databricks_token}\n")
+            env_file.write(f"GIT_REPO_URL={git_repo_url}\n")
+            env_file.write(f"GIT_BRANCH={git_branch}\n")
+            EOF
 
     - name: Configure Databricks CLI
       run: |
