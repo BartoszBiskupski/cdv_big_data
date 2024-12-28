@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:your-username
+  deploy: cdv-big-data
     runs-on: ubuntu-latest
 
     steps:
