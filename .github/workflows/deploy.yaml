@@ -52,7 +52,7 @@ jobs:
           env_file.write(f"DATABRICKS_TOKEN={databricks_token}\n")
           env_file.write(f"GIT_REPO_URL={git_repo_url}\n")
           env_file.write(f"GIT_BRANCH={git_branch}\n")
-      EOF
+          EOF
 
     - name: Configure Databricks CLI
       run: |
