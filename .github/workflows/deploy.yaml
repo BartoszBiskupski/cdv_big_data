@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'cdv_big_data/'
+      - '.github/workflows/deploy.yaml'
 
 jobs:
   CD:
