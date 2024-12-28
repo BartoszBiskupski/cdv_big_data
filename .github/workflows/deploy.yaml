@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'cdv_big_data/'
 
 jobs:
   CD:
@@ -64,4 +66,4 @@ jobs:
 
     - name: Deploy to Databricks
       run: |
-        databricks workspace import_dir . /cdv_big_data/ --overwrite
+        databricks workspace import_dir cdv_big_data /cdv_big_data_project/ --overwrite
