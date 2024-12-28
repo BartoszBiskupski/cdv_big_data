@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy:your-username
     runs-on: ubuntu-latest
 
     steps:
@@ -69,4 +69,4 @@ EOF
       run: |
         repo_name=$(basename ${{ env.GIT_REPO_URL }} .git)
         cd $repo_name
-        databricks workspace import_dir . /Repos/your-username/your-repo-name --overwrite
+        databricks workspace import_dir . /cdv_big_data/ --overwrite
