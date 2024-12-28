@@ -64,4 +64,4 @@ jobs:
 
     - name: Deploy to Databricks
       run: |
-        databricks workspace import_dir . /cdv_big_data_project/ --overwrite
+        databricks workspace import_dir . /cdv_big_data/ --overwrite
