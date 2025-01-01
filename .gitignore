@@ -1,3 +1,3 @@
 test.py
 curl_commands.sh
-/big_data/utils/big_data_runner_local.py
+big_data/workflows/spark/common/utils/big_data_runner_local.py

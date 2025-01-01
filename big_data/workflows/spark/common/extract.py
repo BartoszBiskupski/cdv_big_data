@@ -1,7 +1,7 @@
 import requests
 
 
-class Extract_API(config: dict) -> json:
+class Extract_API(ExecutionContect: ec):
     def __init__(self):
         
         self.name = config["name"]
@@ -11,6 +11,7 @@ class Extract_API(config: dict) -> json:
         self.category = config["source"]["params"]["category"]
         self.subcategory = config["source"]["params"]["subcategory"]
         self.base_url = config["source"]["base_url"]
+        self.api_key = config["source"]["api_key"]
         
         
         
