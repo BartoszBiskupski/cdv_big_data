@@ -1,3 +1,7 @@
+# Databricks notebook source
+
+# COMMAND ----------
+
 #imports
 import sys
 import os
@@ -5,6 +9,7 @@ import json
 sys.path.append("Workspace/cdv_big_data/")
 from big_data.workflows.spark.common.extract import Extract_API
 
+# COMMAND ----------
 # set environment
 environment = "production"
 
@@ -15,6 +20,7 @@ env_path = f"/Users/bartoszbiskupski/Documents/git/cdv_big_data/big_data/envirom
 # load json config file for area task
 config_path = "/Users/bartoszbiskupski/Documents/git/cdv_big_data/big_data/workflows/config/ingestion/area.json"
 
+# COMMAND ----------
 # create execution context
 ec = ExecutionContext(config_path, env_path)
 
