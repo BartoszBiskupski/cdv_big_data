@@ -6,12 +6,12 @@
             "params":
             {
                 "format": "json",
-                "language": "{{env.source_api.gus_dbw.default_language}}",
-                "version": "{{env.source_api.gus_dbw.version}}",
+                "language": "{{ env.source_api.gus_dbw.default_language }}",
+                "version": "{{ env.source_api.gus_dbw.version }}",
                 "category": "area",
                 "subcategory": "area"
             },
-            "base_url": "{{env.gus_dbw.source_api.url}}"
+            "base_url": "{{ env.source_api.gus_dbw.url }}"
         }
     },
     
@@ -23,7 +23,7 @@
         "name": "dbw_area_load",
         "collable": "workflows.spark.common.load.Load_API",
         "params":{
-            "zone": "{{env.zones.landing}}"
+            "zone": "{{ env.zones.landing }}"
         }
 
     }

@@ -1,10 +1,19 @@
 import requests
 
 
-class Extract_API:
-    def __init__(self, api_url, api_key):
-        self.api_url = api_url
-        self.api_key = api_key
+class Extract_API(config: dict) -> json:
+    def __init__(self):
+        
+        self.name = config["name"]
+        self.format = config["source"]["params"]["format"]
+        self.language = config["source"]["params"]["language"]
+        self.version = config["source"]["params"]["version"]
+        self.category = config["source"]["params"]["category"]
+        self.subcategory = config["source"]["params"]["subcategory"]
+        self.base_url = config["source"]["base_url"]
+        
+        
+        
 
     def get_data(self):
         headers = {
