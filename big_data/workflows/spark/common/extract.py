@@ -1,20 +1,18 @@
 import requests
 
 
-class Extract_API(ExecutionContect: ec):
-    def __init__(self):
+class Extract_API:
+    def __init__(self, ec):
+        self.name = ec.get_config()["extract"]["name"]
+        self.format = ec.get_config()["extract"]["source"]["params"]["format"]
+        self.language = ec.get_config()["extract"]["source"]["params"]["language"]
+        self.version = ec.get_config()["extract"]["source"]["params"]["version"]
+        self.category = ec.get_config()["extract"]["source"]["params"]["category"]
+        self.subcategory = ec.get_config()["extract"]["source"]["params"]["subcategory"]
+        self.base_url = ec.get_config()["extract"]["source"]["base_url"]
+        self.api_key = ec.get_config()["extract"]["api_key"]
         
-        self.name = config["name"]
-        self.format = config["source"]["params"]["format"]
-        self.language = config["source"]["params"]["language"]
-        self.version = config["source"]["params"]["version"]
-        self.category = config["source"]["params"]["category"]
-        self.subcategory = config["source"]["params"]["subcategory"]
-        self.base_url = config["source"]["base_url"]
-        self.api_key = config["source"]["api_key"]
-        
-        
-        
+        self.api_url = f"{self.base_url}/{self.version}/{self.category}/{self.category}-{self.subcategory}?lang={self.language}"
 
     def get_data(self):
         headers = {
