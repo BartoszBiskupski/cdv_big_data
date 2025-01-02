@@ -35,5 +35,13 @@
     ],
     "run_as": {
       "service_principal_name": "30a751ae-8584-41d0-addd-037c9661dd5b"
-    }
+    },
+    "edit_mode": "EDITABLE",
+    "access_control_list": [
+      {
+        "user_name": "bart.biskupski@gmail.com",
+        "service_principal_name": "0a751ae-8584-41d0-addd-037c9661dd5b",
+        "permission_level": "CAN_MANAGE"
+      }
+    ]
   }
