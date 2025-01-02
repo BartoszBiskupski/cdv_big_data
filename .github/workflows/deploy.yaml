@@ -1,4 +1,4 @@
-name: CD Pipeline
+name: Deploy to Databricks
 
 on:
   push:
@@ -8,8 +8,12 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      databricks_host: ${{ steps.set-env.outputs.databricks_host }}
+      databricks_token: ${{ steps.set-env.outputs.databricks_token }}
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -48,27 +52,17 @@ jobs:
         databricks_host = client.get_secret('cdv-big-data-adb-url').value
         databricks_token = client.get_secret('cdv-big-data-adb-token').value
 
-        print(f'::set-output name=databricks_host::{databricks_host}')
+        print(f'set-output name=databricks_host::{databricks_host}')
         print(f'::set-output name=databricks_token::{databricks_token}')
         "
 
-  CD:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Clone Git repository
+      run: |
+        git clone ${{ env.GIT_REPO_URL }} --branch ${{ env.GIT_BRANCH }} --single-branch
 
-    - name: Install dependencies
+    - name: Deploy to Databricks
       run: |
-        python -m pip install requests
-    - name: Install databricks CLI
-      run: |
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-
-    - name: Configure Databricks CLI
-      run: |
-        databricks configure --token <<< "${{ needs.setup.outputs.databricks_host }}\n${{ needs.setup.outputs.databricks_token }}"
+        databricks workspace import-dir big_data /cdv_big_data/big_data --overwrite
 
     - name: Read ORC Ingestion Config
       id: read-config
@@ -96,6 +90,3 @@ jobs:
         response.raise_for_status()
         print(response.json())
         "
-      env:
-        DATBRICKS_HOST: ${{ needs.setup.outputs.databricks_host }}
-        DATBRICKS_TOKEN: ${{ needs.setup.outputs.databricks_token }}
