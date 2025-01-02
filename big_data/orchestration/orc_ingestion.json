@@ -1,6 +1,39 @@
 {
-    "task_name": "dbw_area",
-    "params":{
-        
+    "name": "ingestion_workflow",
+    "email_notifications": {
+      "no_alert_for_skipped_runs": false
+    },
+    "webhook_notifications": {},
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 1,
+    "tasks": [
+      {
+        "task_key": "dwb_area",
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
+          "base_parameters": {
+            "test_task_key": "test_task_v",
+            "config_name": "{{job.name}}",
+          },
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "timeout_seconds": 3600,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      }
+    ],
+    "queue": {
+      "enabled": true
+    },
+    "parameters": [
+      {
+        "name": "enviromet",
+        "default": "production"
+      }
+    ],
+    "run_as": {
+      "service_principal_name": "30a751ae-8584-41d0-addd-037c9661dd5b"
     }
-}
+  }

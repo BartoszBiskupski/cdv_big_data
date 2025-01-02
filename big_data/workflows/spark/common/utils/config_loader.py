@@ -33,7 +33,7 @@ class ExecutionContext:
             # Debug: print the rendered config before parsing
             print("Rendered config:", rendered_config)
 
-            api_key = get_api_secret()  # Replace with the actual API key
+            api_key = get_api_secret() # Replace with the actual API key
             env["api_key"] = api_key
             rendered_config = json.loads(rendered_config)
             rendered_config["extract"]["api_key"] = api_key

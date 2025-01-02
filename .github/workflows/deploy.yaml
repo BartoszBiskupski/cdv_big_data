@@ -8,7 +8,7 @@ on:
     #   - 'big_data/**'
 
 jobs:
-  setup-build-deploy:
+  setup:
     runs-on: ubuntu-latest
     outputs:
       databricks_host: ${{ steps.set-env.outputs.databricks_host }}
@@ -59,7 +59,7 @@ jobs:
         "
   CD:
     runs-on: ubuntu-latest
-    needs: setup-build-deploy
+    needs: setup
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
