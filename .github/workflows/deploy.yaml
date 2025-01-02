@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  setup:
+  CD:
     runs-on: ubuntu-latest
     outputs:
       databricks_host: ${{ steps.set-env.outputs.databricks_host }}
@@ -51,10 +51,18 @@ jobs:
 
         databricks_host = client.get_secret('cdv-big-data-adb-url').value
         databricks_token = client.get_secret('cdv-big-data-adb-token').value
+        git_repo_url = client.get_secret('cdv-big-data-git-url').value
+        git_branch = client.get_secret('cdv-big-data-git-branch').value
 
         print(f'set-output name=databricks_host::{databricks_host}')
         print(f'::set-output name=databricks_token::{databricks_token}')
+        with open(os.getenv('GITHUB_ENV'), 'a') as env_file:
+          env_file.write(f'DATABRICKS_HOST={databricks_host}\n')
+          env_file.write(f'DATABRICKS_TOKEN={databricks_token}\n')
+          env_file.write(f'GIT_REPO_URL={git_repo_url}\n')
+          env_file.write(f'GIT_BRANCH={git_branch}\n')
         "
+        
 
     - name: Clone Git repository
       run: |
