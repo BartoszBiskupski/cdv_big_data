@@ -55,7 +55,7 @@ for data_dict in final_config["data"]:
         collable = collable_name.split(".")[-1]
         collable_class = getattr(module, collable)
     
-        final_config["data"] = collable_class(ec)
+        final_config["data"].append(collable_class(ec))
     except KeyError:
         print("No transform step in the config file.")
 
