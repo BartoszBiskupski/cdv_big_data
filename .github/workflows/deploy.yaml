@@ -68,11 +68,11 @@ jobs:
           git clone ${{ env.GIT_REPO_URL }} --branch ${{ env.GIT_BRANCH }} --single-branch
 
       - name: Repo to Archive
-          uses: actions/upload-artifact@v2
-          id: save_repo
-          with:
-            name: big_data
-            path: big_data/
+        uses: actions/upload-artifact@v4
+        id: save_repo
+        with:
+          name: big_data
+          path: big_data/
 
 
       - name: Deploy to Databricks
@@ -87,7 +87,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Retrieve repository
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: big_data
           path: big_data/
