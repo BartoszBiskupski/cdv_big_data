@@ -89,15 +89,38 @@ jobs:
           databricks_host = os.getenv('DATABRICKS_HOST')
           databricks_token = os.getenv('DATABRICKS_TOKEN')
 
-          with open('big_data/orchestration/orc_ingestion.json', 'r') as f:
-              orc_ingestion_config = json.load(f)
-
-          headers = {
-              'Authorization': f'Bearer {databricks_token}',
-              'Content-Type': 'application/json'
-          }
-
-          response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_ingestion_config)
-          response.raise_for_status()
-          print(response.json())
+          file_names = os.listdir('big_data/orchestration/')
+          workflows_list = [file_name.split(".")[0] for file_name in file_names]
+          print(workflows_list)
+              
+          for workflow in workflows_list:
+              try:
+                  with open(f'big_data/orchestration/{workflow}.json', 'r') as f:
+                      orc_config = json.load(f)
+                  
+                  headers = {
+                      'Authorization': f'Bearer {databricks_token}',
+                      'Content-Type': 'application/json'
+                  }
+                  
+                  try:
+                      response = requests.get(f'{databricks_host}/api/2.2/jobs/list', headers=headers)
+                      for job in response.json()['jobs']:
+                          if job['settings']['name'] in workflows_list:
+                              job_id = job['job_id']
+                              response = requests.post(f'{databricks_host}/api/2.2/jobs/reset', headers=headers, 
+                                                      json={"job_id": job_id,
+                                                            "new_settings": orc_config
+                                                            })
+                              response.raise_for_status()
+                              print(response.json())
+                              response.raise_for_status()
+                          else:
+                              response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_config)
+                              response.raise_for_status()
+                              print(response.json())
+                  except Exception as e:
+                      print(e)
+              except FileNotFoundError:
+                  print("File not found")
           "
