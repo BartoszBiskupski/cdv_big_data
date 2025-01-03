@@ -17,7 +17,12 @@ class ExecutionContext:
         return env
     
     def get_api_secret(self):
-        api_key = dbutils.secrets.get(scope="CDV-BIG-DATA", key="api_key")
+        from pyspark.dbutils import DBUtils
+        from pyspark.sql import SparkSession
+        
+        spark = SparkSession.builder.getOrCreate()
+        dbutils = DBUtils(spark)
+        api_key = dbutils.secrets.get(scope="CDV-BIG-DATA", key="api-key")
         return api_key
 
     def get_config(self):

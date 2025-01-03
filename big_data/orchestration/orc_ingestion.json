@@ -8,17 +8,25 @@
     "max_concurrent_runs": 1,
     "tasks": [
       {
-        "task_key": "dwb_area",
+        "task_key": "dbw_area",
         "run_if": "ALL_SUCCESS",
         "notebook_task": {
           "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
           "base_parameters": {
             "test_task_key": "test_task_v",
-            "config_name": "{{job.name}}"
+            "config_name": "{{job.name}}",
+            "task_name": "{{task.name}}"
           },
           "source": "WORKSPACE"
         },
         "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "libraries": [
+            {
+              "pypi": {
+                "package": "jinja2"
+              }
+            }
+          ],
         "timeout_seconds": 3600,
         "email_notifications": {},
         "webhook_notifications": {}
@@ -29,7 +37,7 @@
     },
     "parameters": [
       {
-        "name": "enviromet",
+        "name": "enviroment",
         "default": "production"
       }
     ],
