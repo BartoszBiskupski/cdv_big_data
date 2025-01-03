@@ -101,7 +101,10 @@ jobs:
 
         databricks_host = os.getenv('DATBRICKS_HOST')
         databricks_token = os.getenv('DATBRICKS_TOKEN')
-        orc_ingestion_config = json.loads('big_data/orchestration/orc_ingestion.json')
+
+        path = 'big_data/orchestration/orc_ingestion.json'
+        with open(path, r) as file:
+          orc_ingestion_config = json.load(file)
 
         headers = {
             'Authorization': f'Bearer {databricks_token}',
