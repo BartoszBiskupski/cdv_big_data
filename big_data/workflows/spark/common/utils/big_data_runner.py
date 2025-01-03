@@ -1,7 +1,5 @@
 # Databricks notebook source
 
-# COMMAND ----------
-
 #imports
 import sys
 import os

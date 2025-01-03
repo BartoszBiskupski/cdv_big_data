@@ -30,5 +30,7 @@ class Load_API:
         df = self.spark.read.json(self.spark.sparkContext.parallelize([json.dumps(self.json_input)]))
         
         # Write DataFrame to ADLS
-        df.write.mode("overwrite").json(file_path)
+        (df.write
+            .mode("overwrite")
+            .json(file_path))
         
