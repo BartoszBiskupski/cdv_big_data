@@ -91,14 +91,16 @@ jobs:
       with:
         name: big_data
         path: big_data/
+
     - name: Get ADB variables
-      uses: actions/github-script@v4
       id: get_adb_variables
       env:
         DATABRICKS_HOST: ${{ needs.CD.outputs.databricks_host }}
         DATABRICKS_TOKEN: ${{ needs.CD.outputs.databricks_token }}
-
-
+      run: |
+        echo "Getting ADB variables..."
+        echo "::set-output name=databricks_host::${DATABRICKS_HOST}"
+        echo "::set-output name=databricks_token::${DATABRICKS_TOKEN}"
     - name: Deploy Workflow using REST API
       run: |
         python -c "
