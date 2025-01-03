@@ -91,6 +91,11 @@ jobs:
       with:
         name: big_data
         path: big_data/
+    - name: Get ADB variables
+      id: get_adb_variables
+      run: |
+        echo "DATABRICKS_HOST=${{ needs.CD.outputs.databricks_host }}" >> $GITHUB_ENV
+        echo "DATABRICKS_TOKEN=${{ needs.CD.outputs.databricks_token }}" >> $GITHUB_ENV
 
     - name: Deploy Workflow using REST API
       run: |
@@ -99,19 +104,16 @@ jobs:
         import json
         import requests
 
-        databricks_host = os.getenv('DATBRICKS_HOST')
-        databricks_token = os.getenv('DATBRICKS_TOKEN')
-
         path = 'big_data/orchestration/orc_ingestion.json'
         with open(path, 'r') as file:
           orc_ingestion_config = json.load(file)
 
         headers = {
-            'Authorization': f'Bearer {databricks_token}',
+            'Authorization': f'Bearer {$DATABRICKS_TOKEN}',
             'Content-Type': 'application/json'
         }
 
-        response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_ingestion_config)
+        response = requests.post(f'{$DATABRICKS_HOST}/api/2.2/jobs/create', headers=headers, json=orc_ingestion_config)
         response.raise_for_status()
         print(response.json())
         "
