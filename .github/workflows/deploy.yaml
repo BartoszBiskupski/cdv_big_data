@@ -68,8 +68,8 @@ jobs:
           git clone ${{ env.GIT_REPO_URL }} --branch ${{ env.GIT_BRANCH }} --single-branch
 
       - name: Repo to Archive
-          uses: actions/upload-artifact@v4
-          id: archive
+          uses: actions/upload-artifact@v2
+          id: save_repo
           with:
             name: big_data
             path: big_data/
@@ -87,7 +87,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Retrieve repository
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v2
         with:
           name: big_data
           path: big_data/
