@@ -90,7 +90,7 @@ jobs:
           databricks_token = os.getenv('DATABRICKS_TOKEN')
 
           file_names = os.listdir('big_data/orchestration/')
-          workflows_list = [file_name.split(".")[0] for file_name in file_names]
+          workflows_list = [file_name.split('.')[0] for file_name in file_names]
           print(workflows_list)
               
           for workflow in workflows_list:
