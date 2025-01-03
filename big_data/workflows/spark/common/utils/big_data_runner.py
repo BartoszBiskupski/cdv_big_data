@@ -29,10 +29,52 @@ config_path = f"/Workspace/cdv_big_data/big_data/workflows/config/ingestion/{tas
 # create execution context
 ec = ExecutionContext(config_path, env_path)
 
+final_config = ec.get_config()
 
-#test pulling api
-extract = Extract_API(ec)
+# COMMAND ----------
+#Extract data
+extract_config = final_config["extract"]
 
-print(extract.get_data())
+for index, extract in enumerate(extract_config):
+    collable_name = extract["collable"]
+    module_name = ".".join(collable_name.split(".")[:-1])
+    print(module_name)
+    module = importlib.import_module(module_name)
+    collable = collable_name.split(".")[-1]
+    collable_class = getattr(module, collable)
+    
+    final_config["data"].append(collable_class(ec, index).get_api_data())
+
+    
+# COMMAND ----------
+#transform data
+transform_config = final_config["transform"]
+for data_dict in final_config["data"]:
+    try:
+        collable_name = transform_config["collable"]
+        module_name = ".".join(collable_name.split(".")[:-1])
+        module = importlib.import_module(module_name)
+        collable = collable_name.split(".")[-1]
+        collable_class = getattr(module, collable)
+    
+        final_config["data"] = collable_class(ec)
+    except KeyError:
+        print("No transform step in the config file.")
+
+
+# COMMAND ----------
+#load data
+load_config = final_config["load"]
+
+try:
+    collable_name = load_config["collable"]
+    module_name = ".".join(collable_name.split(".")[:-1])
+    module = importlib.import_module(module_name)
+    collable = collable_name.split(".")[-1]
+    collable_class = getattr(module, collable)
+        
+    collable_class(ec).save_to_adls()
+except KeyError:
+    print("No load step in the config file.")
 
 

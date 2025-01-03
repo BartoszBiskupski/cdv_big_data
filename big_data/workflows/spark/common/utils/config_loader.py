@@ -39,15 +39,17 @@ class ExecutionContext:
             print("Rendered config:", rendered_config)
 
             api_key = get_api_secret() # Replace with the actual API key
+ 
             env["api_key"] = api_key
             rendered_config = json.loads(rendered_config)
-            rendered_config["extract"]["api_key"] = api_key
+            rendered_config["api_key"] = api_key
 
             # print the final config with api_key
-            print(json.dumps(rendered_config, indent=4))
-
             return rendered_config
         except UndefinedError as e:
             print(f"Template rendering error: {e}")
             return None
+        
+    def get_data(self):
+        return self.get_config()["extract"]["source"]["data"]
 

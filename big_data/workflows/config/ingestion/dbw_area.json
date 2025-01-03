@@ -1,7 +1,7 @@
 {
-    "extract": {
+    "extract": [{
         "name": "dbw_area_extract",
-        "collable": "workflows.spark.common.extract.Extract_API",
+        "collable": "big_data.workflows.spark.common.extract.Extract_API",
         "source": {
             "params":
             {
@@ -12,16 +12,25 @@
                 "subcategory": "area"
             },
             "base_url": "{{ env.source_api.gus_dbw.url }}"
+            }
         }
-    },
-    
-    "transform": {
+    ],
+    "data": [
 
+    ],
+    "transform": {
+        "name": "dbw_area_transform",
+        "collable": "big_data.workflows.spark.ingestion.dbw_area.transform",
+        "params": {
+
+        }
     },
 
     "load": {
         "name": "dbw_area_load",
-        "collable": "workflows.spark.common.load.Load_API",
+        "schema": "dbw",
+        "table_name": "dwb_area",
+        "collable": "big_data.workflows.spark.common.load.Load_API",
         "params":{
             "zone": "{{ env.zones.landing }}"
         }
