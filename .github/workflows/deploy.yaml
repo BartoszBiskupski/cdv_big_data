@@ -92,6 +92,7 @@ jobs:
         name: big_data
         path: big_data/
     - name: Get ADB variables
+      uses: actions/github-script@v4
       id: get_adb_variables
       env:
         DATABRICKS_HOST: ${{ needs.CD.outputs.databricks_host }}
