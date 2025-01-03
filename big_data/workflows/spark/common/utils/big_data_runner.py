@@ -5,7 +5,8 @@ import sys
 import os
 import json
 sys.path.append("/Workspace/cdv_big_data/")
-from big_data.workflows.spark.common.extract import Extract_API
+import importlib
+
 from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
 
 # COMMAND ----------
