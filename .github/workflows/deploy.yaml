@@ -92,28 +92,21 @@ jobs:
         name: big_data
         path: big_data/
 
-    - name: Get ADB variables
-      id: get_adb_variables
-      env:
-        DATABRICKS_HOST: ${{ needs.CD.outputs.databricks_host }}
-        DATABRICKS_TOKEN: ${{ needs.CD.outputs.databricks_token }}
-      run: |
-        echo "Getting ADB variables..."
-        echo "::set-output name=databricks_host::${DATABRICKS_HOST}"
-        echo "::set-output name=databricks_token::${DATABRICKS_TOKEN}"
     - name: Deploy Workflow using REST API
+      env:
+        DATABRICKS_HOST: ${{ needs.setup.outputs.databricks_host }}
+        DATABRICKS_TOKEN: ${{ needs.setup.outputs.databricks_token }}
       run: |
         python -c "
         import os
         import json
         import requests
 
-        path = 'big_data/orchestration/orc_ingestion.json'
-        with open(path, 'r') as file:
-          orc_ingestion_config = json.load(file)
-
         databricks_host = os.getenv('DATABRICKS_HOST')
         databricks_token = os.getenv('DATABRICKS_TOKEN')
+
+        with open('big_data/orchestration/orc_ingestion.json', 'r') as f:
+            orc_ingestion_config = json.load(f)
 
         headers = {
             'Authorization': f'Bearer {databricks_token}',
@@ -123,4 +116,4 @@ jobs:
         response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_ingestion_config)
         response.raise_for_status()
         print(response.json())
-        "
+      "
