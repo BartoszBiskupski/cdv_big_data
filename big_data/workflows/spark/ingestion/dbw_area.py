@@ -2,8 +2,10 @@ from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
 from pyspark.sql.types import StringType, StructType, StructField
 from pyspark.sql import SparkSession
 
+spark = SparkSession.builder.getOrCreate()
 
 def transform(ec):
+    
     dbw_data = ec.config["data"]["dbw_area_extract"]
     
     schema = StructType([
