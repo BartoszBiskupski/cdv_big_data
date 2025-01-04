@@ -1,5 +1,5 @@
 from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
-from pyspark.sql.types import StringType
+from pyspark.sql.types import StringType, StructType, StructField
 from pyspark.sql import SparkSession
 
 
