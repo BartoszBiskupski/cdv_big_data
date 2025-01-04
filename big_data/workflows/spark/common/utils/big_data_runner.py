@@ -51,6 +51,7 @@ except KeyError:
 try:
     collable_name = ec.config["transform"]["collable"]
     module_name = ".".join(collable_name.split(".")[:-1])
+    print(module_name)
     module = importlib.import_module(module_name)
     collable = collable_name.split(".")[-1]
     collable_class = getattr(module, collable)
@@ -65,6 +66,7 @@ except KeyError:
 try:
     collable_name = ec.config["load"]["collable"]
     module_name = ".".join(collable_name.split(".")[:-1])
+    print(module_name)
     module = importlib.import_module(module_name)
     collable = collable_name.split(".")[-1]
     collable_class = getattr(module, collable)
