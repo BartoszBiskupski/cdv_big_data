@@ -14,6 +14,8 @@ class Extract_API:
         self.api_key = ec.config["api_key"]
         
         self.api_url = f"{self.base_url}/{self.version}/{self.category}/{self.category}-{self.subcategory}?lang={self.language}"
+        
+        self.get_api_data = self.get_api_data()
 
     def get_api_data(self):
         headers = {
@@ -24,6 +26,7 @@ class Extract_API:
         if response.status_code == 200:
             json_input = response.json()
             self.ec.update_config(self.name, json_input)
+            print(f"Extracted {self.name} data.")
         else:
             response.raise_for_status()
 

@@ -44,5 +44,5 @@ class Load_API:
             .option("autoCompact", "True")
             .partitionBy(["run_date", "snapshot_date"])
             .save(file_path))
-        return(f"Data saved to {file_path}")
+        print(f"Data saved to {file_path}")
         

@@ -41,7 +41,7 @@ try:
         collable = collable_name.split(".")[-1]
         collable_class = getattr(module, collable)
         
-        collable_class(ec, index).get_api_data()
+        collable_class(ec, index)
 except KeyError:
     print("No extract step in the config file.")
 
