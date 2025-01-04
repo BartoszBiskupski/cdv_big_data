@@ -18,7 +18,7 @@ def transform(ec):
 
     ])
     
-    df_input = spark.createDataFrame(data, schema)
+    df_input = spark.createDataFrame(dbw_data, schema)
 
     ec.update_config("df_transform", df_input)
     
