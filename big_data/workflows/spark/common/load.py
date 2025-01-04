@@ -2,35 +2,47 @@ import json
 import os
 from datetime import datetime
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import lit
+from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
 
 class Load_API:
     def __init__(self, ec):
-        self.zone = ec.get_config()["load"]["zone"]
-        self.extract_name = ec.get_config()["extract"]["name"]
-        self.json_input = ec.get_config()["data"][self.extract_name]
-        self.schema = ec.get_config()["load"]["schema"]
-        self.table_name = ec.get_config()["load"]["table_name"]
-        
+        self.zone = ec.config["load"]["params"]["zone"]
+        self.df_input = ec.config["data"]["df_transform"]
+        self.schema = ec.config["load"]["schema"]
+        self.table_name = ec.config["load"]["table_name"]
         self.spark = SparkSession.builder.getOrCreate()
+        self.save_to_adls = self.save_to_adls()
+
+        
 
     def save_to_adls(self):
         
-        if not self.json_input:
+        if not self.df_input:
             raise ValueError("The provided JSON input is empty.")
         
         today = datetime.today().strftime('%Y-%m-%d')
-        snapshot_date = ec.get_config()["load"]["snapshot_date"]
-        dataset_name = f"{self.schema}.{self.table_name}"
+        dataset_name = f"{self.schema}_{self.table_name}"
         
         if not dataset_name:
             raise ValueError("The dataset name is missing.")
         
-        file_path = f"{self.zone}/run_date={today}/{dataset_name}/snapshot={snapshot_date}/{dataset_name}.json"
-        # Convert JSON input to DataFrame
-        df = self.spark.read.json(self.spark.sparkContext.parallelize([json.dumps(self.json_input)]))
-        
+        file_path = f"{self.zone}/{dataset_name}/"
+        df_final = (self.df_input
+                    .withColumn("run_date", lit(today))
+                    )
+        if "snapshot_date" not in self.df_input.columns:
+            snapshot_date = today
+            df_final = (df_final
+                    .withColumn("snapshot_date", lit(snapshot_date))
+                        )
         # Write DataFrame to ADLS
-        (df.write
+        (df_final.write
+            .format("parquet")
             .mode("overwrite")
-            .json(file_path))
+            .option("optimizerWrite", "True")
+            .option("autoCompact", "True")
+            .partitionBy(["run_date", "snapshot_date"])
+            .save(file_path))
+        return(f"Data saved to {file_path}")
         

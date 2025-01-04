@@ -10,11 +10,21 @@ class ExecutionContext:
     def __init__(self, config_path, env_path):
         self.config_path = config_path
         self.env_path = env_path
+        self.env = self.get_env()
+        self.raw_config = self.get_config()
+        self.config = self.render_config()
         
     def get_env(self):
         with open(self.env_path, "r") as f:
             env = json.load(f)
+        print("Environment variables loaded:", env)  # Debug: Print the environment variables    
         return env
+
+    def get_config(self):
+        with open(self.config_path, "r") as f:
+            config = json.load(f)
+        print("Task variables loaded:", config)  # Debug: Print the environment variables   
+        return config
     
     def get_api_secret(self):
         from pyspark.dbutils import DBUtils
@@ -25,31 +35,32 @@ class ExecutionContext:
         api_key = dbutils.secrets.get(scope="CDV-BIG-DATA", key="api-key")
         return api_key
 
-    def get_config(self):
-        with open(self.config_path, "r") as f:
-            config_template = f.read()
-        env = self.get_env()
-        # Add api_key to the final config
-
+    def render_config(self):
+        raw_config_str = json.dumps(self.raw_config)
         # render the config template using jinja2 with StrictUndefined
         try:
-            template = Template(config_template, undefined=StrictUndefined)
-            rendered_config = template.render(env=env)
+            template = Template(raw_config_str, undefined=StrictUndefined)
+            rendered_config = template.render(env=self.env)
             # Debug: print the rendered config before parsing
-            print("Rendered config:", rendered_config)
+            # print("Rendered config:", rendered_config)
 
             api_key = self.get_api_secret() # Replace with the actual API key
+            
  
-            env["api_key"] = api_key
             rendered_config = json.loads(rendered_config)
             rendered_config["api_key"] = api_key
-
+            # print(rendered_config)
+            self.config = rendered_config
             # print the final config with api_key
-            return rendered_config
+            print("Loaded final config")
+            return self.config
         except UndefinedError as e:
             print(f"Template rendering error: {e}")
             return None
         
-    def get_data(self):
-        return self.get_config()["extract"]["source"]["data"]
+    def update_config(self, new_key, new_value):
+        # Update the existing config
+        self.config["data"][new_key] = new_value
+        print(f"Updated key {new_key}")
+
 

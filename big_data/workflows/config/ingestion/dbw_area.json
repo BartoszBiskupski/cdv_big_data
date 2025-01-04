@@ -15,9 +15,9 @@
             }
         }
     ],
-    "data": [
-
-    ],
+    "data": {
+        
+    },
     "transform": {
         "name": "dbw_area_transform",
         "collable": "big_data.workflows.spark.ingestion.dbw_area.transform",

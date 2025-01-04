@@ -32,47 +32,44 @@ final_config = ec.get_config()
 
 # COMMAND ----------
 #Extract data
-extract_config = final_config["extract"]
-
-for index, extract in enumerate(extract_config):
-    collable_name = extract["collable"]
-    module_name = ".".join(collable_name.split(".")[:-1])
-    print(module_name)
-    module = importlib.import_module(module_name)
-    collable = collable_name.split(".")[-1]
-    collable_class = getattr(module, collable)
-    
-    final_config["data"].append(collable_class(ec, index).get_api_data())
+try:
+    for index, extract in enumerate(ec.config["extract"]):
+        collable_name = extract["collable"]
+        module_name = ".".join(collable_name.split(".")[:-1])
+        print(module_name)
+        module = importlib.import_module(module_name)
+        collable = collable_name.split(".")[-1]
+        collable_class = getattr(module, collable)
+        
+        collable_class(ec, index).get_api_data()
+except KeyError:
+    print("No extract step in the config file.")
 
     
 # COMMAND ----------
-#transform data
-transform_config = final_config["transform"]
+# transform data
 try:
-    collable_name = transform_config["collable"]
+    collable_name = ec.config["transform"]["collable"]
     module_name = ".".join(collable_name.split(".")[:-1])
     module = importlib.import_module(module_name)
     collable = collable_name.split(".")[-1]
     collable_class = getattr(module, collable)
 
-    final_config["data"].append(collable_class(ec))
+    collable_class(ec)
 except KeyError:
     print("No transform step in the config file.")
 
 
 # COMMAND ----------
 #load data
-load_config = final_config["load"]
-
 try:
-    collable_name = load_config["collable"]
+    collable_name = ec.config["load"]["collable"]
     module_name = ".".join(collable_name.split(".")[:-1])
     module = importlib.import_module(module_name)
     collable = collable_name.split(".")[-1]
     collable_class = getattr(module, collable)
         
-    collable_class(ec).save_to_adls()
+    collable_class(ec)
 except KeyError:
     print("No load step in the config file.")
-
 
