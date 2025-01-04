@@ -39,6 +39,10 @@
       {
         "name": "enviroment",
         "default": "production"
+      },
+      {
+        "name": "run_date",
+        "default": "{{ job.start_time.iso_date }}"
       }
     ],
     "run_as": {

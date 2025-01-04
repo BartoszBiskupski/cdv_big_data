@@ -48,17 +48,16 @@ for index, extract in enumerate(extract_config):
 # COMMAND ----------
 #transform data
 transform_config = final_config["transform"]
-for data_dict in final_config["data"]:
-    try:
-        collable_name = transform_config["collable"]
-        module_name = ".".join(collable_name.split(".")[:-1])
-        module = importlib.import_module(module_name)
-        collable = collable_name.split(".")[-1]
-        collable_class = getattr(module, collable)
-    
-        final_config["data"].append(collable_class(ec))
-    except KeyError:
-        print("No transform step in the config file.")
+try:
+    collable_name = transform_config["collable"]
+    module_name = ".".join(collable_name.split(".")[:-1])
+    module = importlib.import_module(module_name)
+    collable = collable_name.split(".")[-1]
+    collable_class = getattr(module, collable)
+
+    final_config["data"].append(collable_class(ec))
+except KeyError:
+    print("No transform step in the config file.")
 
 
 # COMMAND ----------
