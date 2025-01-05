@@ -29,7 +29,7 @@
     "load": {
         "name": "dbw_area_load",
         "schema": "dbw",
-        "table_name": "dwb_area",
+        "table_name": "dbw_area",
         "collable": "big_data.workflows.spark.common.load.Load_API",
         "params":{
             "zone": "{{ env.zones.landing }}"

@@ -1,0 +1,78 @@
+{
+    "name": "ingestion_workflow",
+    "email_notifications": {
+      "no_alert_for_skipped_runs": false
+    },
+    "webhook_notifications": {},
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 1,
+    "tasks": [
+      {
+        "task_key": "harmonized_dependencies",
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
+          "base_parameters": {
+            "job_name": "{{job.name}}",
+            "task_name": "{{task.name}}"
+          },
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "libraries": [
+          {
+            "requirements": "/Workspace/cdv_big_data/big_data/requirements.txt"
+          }
+        ],
+        "timeout_seconds": 3600,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "dbw_area",
+        "depends_on": [
+          {
+            "task_key": "ingestion_dependencies"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
+          "base_parameters": {
+            "job_name": "{{job.name}}",
+            "task_name": "{{task.name}}"
+          },
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "timeout_seconds": 3600,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      }
+    ],
+    "queue": {
+      "enabled": true
+    },
+    "parameters": [
+      {
+        "name": "enviroment",
+        "default": "production"
+      },
+      {
+        "name": "run_date",
+        "default": "{{job.start_time.iso_date}}"
+      }
+    ],
+    "run_as": {
+      "service_principal_name": "30a751ae-8584-41d0-addd-037c9661dd5b"
+    },
+    "edit_mode": "EDITABLE",
+    "access_control_list": [
+      {
+        "user_name": "bart.biskupski@gmail.com",
+        "service_principal_name": "0a751ae-8584-41d0-addd-037c9661dd5b",
+        "permission_level": "CAN_MANAGE"
+      }
+    ]
+  }
+

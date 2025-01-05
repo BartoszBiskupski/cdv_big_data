@@ -1,5 +1,5 @@
 from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
-from pyspark.sql.types import StringType, StructType, StructField
+from pyspark.sql.types import StringType, StructType, StructField, BooleanType
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.getOrCreate()
@@ -14,7 +14,7 @@ def transform(ec):
         StructField("id-nadrzedny-element",StringType(),True),
         StructField("id-poziom",StringType(),True),
         StructField("nazwa-poziom",StringType(),True),
-        StructField("czy-zmienna",StringType(),True),
+        StructField("czy-zmienna",BooleanType(),True),
 
     ])
     
