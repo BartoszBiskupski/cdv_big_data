@@ -13,8 +13,7 @@
         "notebook_task": {
           "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
           "base_parameters": {
-            "test_task_key": "test_task_v",
-            "config_name": "{{job.name}}",
+            "job_name": "{{job.name}}",
             "task_name": "{{task.name}}"
           },
           "source": "WORKSPACE"
