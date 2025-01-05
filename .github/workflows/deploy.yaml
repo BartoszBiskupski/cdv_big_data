@@ -96,7 +96,8 @@ jobs:
           for workflow in workflows_list:
               try:
                   with open(f'big_data/orchestration/{workflow}.json', 'r') as f:
-                      orc_config = json.load(f)
+                    orc_config = json.load(f)
+                  print(orc_config)
                   
                   headers = {
                       'Authorization': f'Bearer {databricks_token}',
@@ -113,10 +114,11 @@ jobs:
                                                             "new_settings": orc_config
                                                             })
                               response.raise_for_status()
-                              response.raise_for_status()
+                              print(f"Updated workflow_name: {job['settings']['name']} / job_id: {job_id}")")
                           else:
                               response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_config)
                               response.raise_for_status()
+                              print(f"Added workflow_name: {job['settings']['name']} / job_id: {job_id}")")
                   except Exception as e:
                       print(e)
               except FileNotFoundError:
