@@ -14,7 +14,7 @@ def transform(ec):
         StructField("id-nadrzedny-element",StringType(),True),
         StructField("id-poziom",StringType(),True),
         StructField("nazwa-poziom",StringType(),True),
-        StructField("czy-zmienna",BooleanType(),True),
+        StructField("czy-zmienne",BooleanType(),True),
 
     ])
     

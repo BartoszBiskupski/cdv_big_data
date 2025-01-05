@@ -26,7 +26,7 @@ class Extract_API:
         if response.status_code == 200:
             json_input = response.json()
             self.ec.update_config(self.name, json_input)
-            print(f"Extracted {self.name} data.")
+            print(f"Extracted {self.name} data from {self.url}.")
         else:
             response.raise_for_status()
 
