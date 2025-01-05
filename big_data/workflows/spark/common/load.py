@@ -40,6 +40,7 @@ class Load_API:
         (df_final.write
             .format("parquet")
             .mode("overwrite")
+            .option("overwriteSchema", "true")
             .option("optimizerWrite", "True")
             .option("autoCompact", "True")
             .partitionBy(["run_date", "snapshot_date"])
