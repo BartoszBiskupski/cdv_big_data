@@ -110,15 +110,15 @@ jobs:
                           if job['settings']['name'] in workflows_list:
                               job_id = job['job_id']
                               response = requests.post(f'{databricks_host}/api/2.2/jobs/reset', headers=headers, 
-                                                      json={"job_id": job_id,
-                                                            "new_settings": orc_config
+                                                      json={'job_id': job_id,
+                                                            'new_settings': orc_config
                                                             })
                               response.raise_for_status()
-                              print(f"Updated workflow_name: {job['settings']['name']} / job_id: {job_id}")")
+                              print(f'''Updated workflow_name: {job['settings']['name']} / job_id: {job_id})'''')
                           else:
                               response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_config)
                               response.raise_for_status()
-                              print(f"Added workflow_name: {job['settings']['name']} / job_id: {job_id}")")
+                              print(f'''Added workflow_name: {job['settings']['name']} / job_id: {job_id}''')
                   except Exception as e:
                       print(e)
               except FileNotFoundError:
