@@ -55,7 +55,7 @@ class Extract_API:
             # print(response.json())
             # Check the response status code and print the response
             if response.status_code == 200:
-                print("Request was successful.")
+                print(f"Request was successful for page {page_no}.")
                 page_no += 1
                 path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}_{page_no}.csv"
                 spark = SparkSession.builder.getOrCreate()
