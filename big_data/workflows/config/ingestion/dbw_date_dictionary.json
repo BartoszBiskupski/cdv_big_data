@@ -1,6 +1,6 @@
 {
     "extract": [{
-        "name": "dbw_area_extract",
+        "name": "dbw_date_dictionary_extract",
         "collable": "big_data.workflows.spark.common.extract.Extract_API",
         "source": {
             "params":
@@ -8,15 +8,15 @@
                 "language": "{{ env.source_api.gus_dbw.default_language }}",
                 "version": "{{ env.source_api.gus_dbw.version }}",
                 "data": false,
-                "page_no": false,
-                "cnt_per_page": false,
+                "page_no": 0,
+                "cnt_per_page": 5000,
                 "id_obszaru": false,
                 "id_zmienna": false,
                 "id_przekroj_list": false,
                 "id_okres": false,
                 "id_rok_list": false,
-                "category": "area",
-                "subcategory": "area",
+                "category": "dictionaries",
+                "subcategory": "date-dictionary",
                 "base_url": "{{ env.source_api.gus_dbw.url }}"
                 }   
             }
@@ -30,7 +30,7 @@
 
     "load": {
         "params":{
-            "table_name": "dbw_area",
+            "table_name": "dbw_date_dictionary",
             "source_name": "{{ env.source_api.gus_dbw.source_name }}",
             "zone": "{{ env.zones.landing }}"
         }

@@ -4,7 +4,8 @@ import os
 import json
 from jinja2 import Template, StrictUndefined
 from jinja2.exceptions import UndefinedError
-
+from pyspark.dbutils import DBUtils
+from pyspark.sql import SparkSession
 
 class ExecutionContext:
     def __init__(self, config_path, env_path):
@@ -27,8 +28,6 @@ class ExecutionContext:
         return config
     
     def get_api_secret(self):
-        from pyspark.dbutils import DBUtils
-        from pyspark.sql import SparkSession
         
         spark = SparkSession.builder.getOrCreate()
         dbutils = DBUtils(spark)
@@ -45,7 +44,7 @@ class ExecutionContext:
             # print("Rendered config:", rendered_config)
 
             api_key = self.get_api_secret() # Replace with the actual API key
-            
+
  
             rendered_config = json.loads(rendered_config)
             rendered_config["api_key"] = api_key
