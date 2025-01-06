@@ -43,7 +43,7 @@ class Extract_API:
         self.id_rok = f"&id-rok={rok}" if rok else ""
         self.language = f"?lang={self.params['language']}"
         
-        api_url = f"{self.base_url}/{self.version}/{self.category}/{self.subcategory}?{self.id_zmienna}{self.id_przekroj}{self.id_rok}{self.id_okres}{self.page_no}{self.cnt_per_page}{self.language}"             
+        api_url = f"{self.base_url}/{self.version}/{self.category}/{self.subcategory}?{self.id_zmienna}{self.id_przekroj}{self.id_rok}{self.id_okres}{self.page_no}{self.cnt_per_page}"             
         return api_url
     
     
