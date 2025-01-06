@@ -2,6 +2,8 @@ import requests
 from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
 import datetime
 from pyspark.dbutils import DBUtils
+from pyspark.sql import SparkSession
+
 
 class Extract_API:
     def __init__(self, ec, index):
@@ -24,6 +26,9 @@ class Extract_API:
         self.run_time = datetime.datetime.now().strftime("%Y-%m-%d")
         print(self.url)
         self.get_api_data()
+        
+        self.spark = SparkSession.builder.getOrCreate()
+        self.dbutils = DBUtils(self.spark)
     
     def url_builder(self, przekroj=None, rok=None):
         self.params = {**self.extract_kwargs["source"]["params"]}
@@ -57,7 +62,7 @@ class Extract_API:
                 dbutils.fs.put
                 self.page_no += 1
                 path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}_{self.page_no}.csv"
-                dbutils.fs.put(path, response.text, overwrite=True)
+                self.dbutils.fs.put(path, response.text, overwrite=True)
                 print(f"Saved data to {path}")
             else:
                 print(f"end of pages")
@@ -72,7 +77,7 @@ class Extract_API:
         if response.status_code == 200:
             print("Request was successful.")
             path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}.csv"
-            dbutils.fs.put(path, response.text, overwrite=True)
+            self.dbutils.fs.put(path, response.text, overwrite=True)
             print(f"Saved data to {path}")
         else:
             print(f"end of pages")
