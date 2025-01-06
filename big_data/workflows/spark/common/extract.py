@@ -27,42 +27,42 @@ class Extract_API:
         print(self.url)
         self.get_api_data()
         
-        self.spark = SparkSession.builder.getOrCreate()
-        self.dbutils = DBUtils(self.spark)
     
-    def url_builder(self, przekroj=None, rok=None):
+    def url_builder(self, przekroj=None, rok=None, page_no=None):
         self.params = {**self.extract_kwargs["source"]["params"]}
         self.base_url = self.params["base_url"]
         self.version = self.params["version"]
         self.category = self.params["category"]
         self.subcategory = self.params["subcategory"]
         self.data = self.params["data"]
-        self.cnt_per_page = f"&ile-na-stronie={self.params['cnt_per_page']}" if self.params['cnt_per_page'] else ""
-        self.page_no = f"&numer-strony={self.params['page_no']}" if self.params['page_no']  else ""
+        self.cnt_per_page = f"&page-size={self.params['cnt_per_page']}" if self.params['cnt_per_page'] else ""
+        self.page_no = f"&page={page_no}" if page_no else ""
         self.id_zmienna = f"&id-zmienna={self.params['id_zmienna']}" if self.params['id_zmienna'] else ""
         self.id_przekroj = f"&id-przekroj={przekroj}" if przekroj else ""
         self.id_okres = f"&id-okres={self.params['id_okres'][0]}" if self.params['id_okres'] else ""
         self.id_rok = f"&id-rok={rok}" if rok else ""
         self.language = f"?lang={self.params['language']}"
         
-        api_url = f"{self.base_url}/{self.version}/{self.category}/{self.category}-{self.subcategory}{self.id_zmienna}{self.id_przekroj}{self.id_rok}{self.id_okres}{self.cnt_per_page}{self.page_no}{self.language}"
-                        
+        api_url = f"{self.base_url}/{self.version}/{self.category}/{self.subcategory}?{self.id_zmienna}{self.id_przekroj}{self.id_rok}{self.id_okres}{self.page_no}{self.cnt_per_page}{self.language}"             
         return api_url
     
     
-    def page_turner(self, przekroj="", rok=""): 
+    def page_turner(self, przekroj="", rok="", page_no=0): 
         page_check = True
         while page_check:
-            self.url = self.url_builder(przekroj, rok)
+            self.url = self.url_builder(przekroj, rok, page_no)
             response = requests.get(self.url, headers=self.headers)
             # print(response.json())
             # Check the response status code and print the response
             if response.status_code == 200:
                 print("Request was successful.")
-                self.page_no += 1
+                page_no += 1
                 path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}_{self.page_no}.csv"
-                self.dbutils.fs.put(path, response.text, overwrite=True)
+                spark = SparkSession.builder.getOrCreate()
+                dbutils = DBUtils(spark)
+                dbutils.fs.put(path, response.text, overwrite=True)
                 print(f"Saved data to {path}")
+                page_check = True
             else:
                 print(f"end of pages")
                 page_check = False
@@ -76,7 +76,9 @@ class Extract_API:
         if response.status_code == 200:
             print("Request was successful.")
             path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}.csv"
-            self.dbutils.fs.put(path, response.text, overwrite=True)
+            spark = SparkSession.builder.getOrCreate()
+            dbutils = DBUtils(spark)
+            dbutils.fs.put(path, response.text, overwrite=True)
             print(f"Saved data to {path}")
         else:
             print(f"end of pages")

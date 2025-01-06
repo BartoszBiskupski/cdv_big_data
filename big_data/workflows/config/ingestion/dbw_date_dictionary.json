@@ -8,7 +8,7 @@
                 "language": "{{ env.source_api.gus_dbw.default_language }}",
                 "version": "{{ env.source_api.gus_dbw.version }}",
                 "data": false,
-                "page_no": 0,
+                "page_no": "0",
                 "cnt_per_page": 5000,
                 "id_obszaru": false,
                 "id_zmienna": false,
