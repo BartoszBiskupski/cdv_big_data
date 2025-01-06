@@ -59,7 +59,6 @@ class Extract_API:
             # Check the response status code and print the response
             if response.status_code == 200:
                 print("Request was successful.")
-                dbutils.fs.put
                 self.page_no += 1
                 path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}_{self.page_no}.csv"
                 self.dbutils.fs.put(path, response.text, overwrite=True)
