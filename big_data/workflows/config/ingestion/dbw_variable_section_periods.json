@@ -15,8 +15,8 @@
                 "id_przekroj_list": false,
                 "id_okres": false,
                 "id_rok_list": false,
-                "category": "wvariable",
-                "subcategory": "wvariable-section-periods",
+                "category": "variable",
+                "subcategory": "variable-section-periods",
                 "base_url": "{{ env.source_api.gus_dbw.url }}"
                 }   
             }

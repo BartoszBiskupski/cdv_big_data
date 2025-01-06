@@ -50,7 +50,7 @@ class Extract_API:
     def page_turner(self, przekroj="", rok="", page_no=0): 
         page_check = True
         while page_check:
-            self.url = self.url_builder(przekroj, rok, page_no)
+            self.url = self.url_builder(przekroj, rok, str(page_no))
             response = requests.get(self.url, headers=self.headers)
             # print(response.json())
             # Check the response status code and print the response
