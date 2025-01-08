@@ -20,6 +20,7 @@ class Extract_API:
                 "Accept": "text/csv"
             }
         self.id_przekroj_list = self.extract_kwargs["source"]["params"]["id_przekroj_list"]
+        self.page_no = self.extract_kwargs["source"]["params"]["page_no"]
         self.id_rok_list = self.extract_kwargs["source"]["params"]["id_rok_list"]
         self.zone = self.ec.config["load"]["params"]["zone"]
 
@@ -34,15 +35,16 @@ class Extract_API:
         self.category = self.params["category"]
         self.subcategory = self.params["subcategory"]
         self.data = self.params["data"]
-        self.cnt_per_page = f"&page-size={self.params['cnt_per_page']}" if self.params['cnt_per_page'] else ""
-        self.page_no = f"&page={page_no}" if page_no else ""
+        self.cnt_per_page = f"&ile-na-stronie={self.params['cnt_per_page']}" if self.params['cnt_per_page'] else ""
+        self.page_no = f"&numer-strony={page_no}" if page_no else ""
         self.id_zmienna = f"&id-zmienna={self.params['id_zmienna']}" if self.params['id_zmienna'] else ""
         self.id_przekroj = f"&id-przekroj={przekroj}" if przekroj else ""
         self.id_okres = f"&id-okres={self.params['id_okres'][0]}" if self.params['id_okres'] else ""
         self.id_rok = f"&id-rok={rok}" if rok else ""
-        self.language = f"?lang={self.params['language']}"
+        self.language = f"&lang={self.params['language']}"
         
-        api_url = f"{self.base_url}/{self.version}/{self.category}/{self.subcategory}?{self.id_zmienna}{self.id_przekroj}{self.id_rok}{self.id_okres}{self.page_no}{self.cnt_per_page}{self.language}"             
+        api_url = f"{self.base_url}/{self.version}/{self.category}/{self.subcategory}?{self.id_zmienna}{self.id_przekroj}{self.id_rok}{self.id_okres}{self.cnt_per_page}{self.page_no}{self.language}"
+        print(api_url)          
         return api_url
     
     
