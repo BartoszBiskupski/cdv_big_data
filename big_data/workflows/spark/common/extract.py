@@ -22,9 +22,8 @@ class Extract_API:
         self.id_przekroj_list = self.extract_kwargs["source"]["params"]["id_przekroj_list"]
         self.id_rok_list = self.extract_kwargs["source"]["params"]["id_rok_list"]
         self.zone = self.ec.config["load"]["params"]["zone"]
-        self.url = self.url_builder()
+
         self.run_time = datetime.datetime.now().strftime("%Y-%m-%d")
-        print(self.url)
         self.get_api_data()
         
     
