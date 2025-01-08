@@ -22,7 +22,7 @@ class Extract_API:
         self.id_przekroj_list = self.extract_kwargs["source"]["params"]["id_przekroj_list"]
         self.page_no = self.extract_kwargs["source"]["params"]["page_no"]
         self.id_rok_list = self.extract_kwargs["source"]["params"]["id_rok_list"]
-        self.okres_list = self.extract_kwargs["source"]["params"]["okres_list"]
+        self.okres_list = self.extract_kwargs["source"]["params"]["id_okres_list"]
         self.zone = self.ec.config["load"]["params"]["zone"]
 
         self.run_time = datetime.datetime.now().strftime("%Y-%m-%d")
