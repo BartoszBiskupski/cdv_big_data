@@ -1,0 +1,45 @@
+{
+    "extract": [{
+        "name": "dbw_variable_section_position_extract",
+        "collable": "big_data.workflows.spark.common.extract.Extract_API",
+        "source": {
+            "params":
+            {
+                "language": "{{ env.source_api.gus_dbw.default_language }}",
+                "version": "{{ env.source_api.gus_dbw.version }}",
+                "data": false,
+                "page_no": "0",
+                "cnt_per_page": 5000,
+                "id_obszaru": false,
+                "id_zmienna": false,
+                "id_przekroj_list": [2, 12, 16, 1242, 1261, 234, 364, 688, 1179, 
+                                161, 864, 869, 870, 871, 1157, 1158, 1159, 1160, 143, 
+                                721, 1247, 264, 265, 266, 267, 268, 269, 585, 270, 
+                                271, 272, 273, 274, 275, 276, 586, 277, 285, 286, 
+                                287, 293, 589, 288, 109, 289, 290, 262, 1339, 1371, 
+                                1372, 1373, 1394, 291, 292, 584, 590, 34, 46, 49, 
+                                66, 67, 1068, 1069, 1070, 1074, 1146, 1147, 1148, 1374],
+                "id_okres": false,
+                "id_rok_list": false,
+                "category": "variable",
+                "subcategory": "variable-section-position",
+                "base_url": "{{ env.source_api.gus_dbw.url }}"
+                }   
+            }
+        }
+    ],
+    "data": {
+        
+    },
+    "transform": {
+    },
+
+    "load": {
+        "params":{
+            "table_name": "dbw_variable_section_position",
+            "source_name": "{{ env.source_api.gus_dbw.source_name }}",
+            "zone": "{{ env.zones.landing }}"
+        }
+
+    }
+}
