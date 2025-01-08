@@ -70,7 +70,7 @@ class Extract_API:
                 page_check = False
                 return page_check
     
-    def single_page(self, przekroj="", rok="", okres = ""), :
+    def single_page(self, przekroj="", rok="", okres = ""):
         self.url = self.url_builder(przekroj, rok)
         response = requests.get(self.url, headers=self.headers)
         # print(response.json())
