@@ -22,13 +22,14 @@ class Extract_API:
         self.id_przekroj_list = self.extract_kwargs["source"]["params"]["id_przekroj_list"]
         self.page_no = self.extract_kwargs["source"]["params"]["page_no"]
         self.id_rok_list = self.extract_kwargs["source"]["params"]["id_rok_list"]
+        self.okres_list = self.extract_kwargs["source"]["params"]["okres_list"]
         self.zone = self.ec.config["load"]["params"]["zone"]
 
         self.run_time = datetime.datetime.now().strftime("%Y-%m-%d")
         self.get_api_data()
         
     
-    def url_builder(self, przekroj=None, rok=None, page_no=None):
+    def url_builder(self, przekroj=None, rok=None, okres=None, page_no=None):
         self.params = {**self.extract_kwargs["source"]["params"]}
         self.base_url = self.params["base_url"]
         self.version = self.params["version"]
@@ -39,7 +40,7 @@ class Extract_API:
         self.page_no = f"&numer-strony={page_no}" if page_no else ""
         self.id_zmienna = f"&id-zmienna={self.params['id_zmienna']}" if self.params['id_zmienna'] else ""
         self.id_przekroj = f"&id-przekroj={przekroj}" if przekroj else ""
-        self.id_okres = f"&id-okres={self.params['id_okres'][0]}" if self.params['id_okres'] else ""
+        self.id_okres = f"&id-okres={okres}" if okres else ""
         self.id_rok = f"&id-rok={rok}" if rok else ""
         self.language = f"&lang={self.params['language']}"
         
@@ -48,7 +49,7 @@ class Extract_API:
         return api_url
     
     
-    def page_turner(self, przekroj="", rok="", page_no=0): 
+    def page_turner(self, przekroj="", rok="", okres = "", page_no=0): 
         page_check = True
         while page_check:
             self.url = self.url_builder(przekroj, rok, str(page_no))
@@ -69,7 +70,7 @@ class Extract_API:
                 page_check = False
                 return page_check
     
-    def single_page(self, przekroj="", rok=""):
+    def single_page(self, przekroj="", rok="", okres = ""), :
         self.url = self.url_builder(przekroj, rok)
         response = requests.get(self.url, headers=self.headers)
         # print(response.json())
@@ -97,12 +98,20 @@ class Extract_API:
                 for przekroj in self.id_przekroj_list:
                     if self.id_rok_list:
                         for rok in self.id_rok_list:
-                            if self.page_no:
-                                page_check = True
-                                while page_check:
-                                    page_check = self.page_turner(przekroj, rok)
+                            if self.okres_list:
+                                for okres in self.okres_list:
+                                    if self.page_no:
+                                        page_check = True
+                                        while page_check:
+                                            page_check = self.page_turner(przekroj, rok, okres)
+                                    else:
+                                        self.single_page(przekroj, rok, okres)
                             else:
-                                self.single_page(przekroj, rok)
+                                if page_check = True
+                                    while page_check:
+                                        page_check = self.page_turner(przekroj, rok)
+                                else:
+                                    self.single_page(przekroj, rok)
                     else:
                         if self.page_no:
                             page_check = True

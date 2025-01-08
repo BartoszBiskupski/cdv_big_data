@@ -12,7 +12,7 @@
                 "cnt_per_page": 5000,
                 "id_zmienna": false,
                 "id_przekroj_list": false,
-                "id_okres": false,
+                "id_okres_list": false,
                 "id_rok_list": false,
                 "category": "dictionaries",
                 "subcategory": "date-dictionary",

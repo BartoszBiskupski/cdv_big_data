@@ -18,7 +18,7 @@
                                 287, 293, 589, 288, 109, 289, 290, 262, 1339, 1371, 
                                 1372, 1373, 1394, 291, 292, 584, 590, 34, 46, 49, 
                                 66, 67, 1068, 1069, 1070, 1074, 1146, 1147, 1148, 1374],
-                "id_okres": false,
+                "id_okres_list": false,
                 "id_rok_list": false,
                 "category": "variable",
                 "subcategory": "variable-section-position",

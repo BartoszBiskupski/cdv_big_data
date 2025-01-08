@@ -1,0 +1,57 @@
+{
+    "extract": [
+        {
+            "name": "dbw_way_of_presentation_extract",
+            "collable": "big_data.workflows.spark.common.extract.Extract_API",
+            "source": {
+                "params": {
+                    "language": "{{ env.source_api.gus_dbw.default_language }}",
+                    "version": "{{ env.source_api.gus_dbw.version }}",
+                    "data": false,
+                    "page_no": "0",
+                    "cnt_per_page": 5000,
+                    "id_zmienna": 515,
+                    "id_przekroj_list": [
+                        264,
+                        265,
+                        266,
+                        267,
+                        268,
+                        269,
+                        585
+                    ],
+                    "id_okres_list": [
+                        282
+                    ],
+                    "id_rok_list": [
+                        2010,
+                        2011,
+                        2012,
+                        2013,
+                        2014,
+                        2015,
+                        2016,
+                        2017,
+                        2018,
+                        2019,
+                        2020,
+                        2021,
+                        2022
+                    ],
+                    "category": "variable",
+                    "subcategory": "variable-data-section",
+                    "base_url": "{{ env.source_api.gus_dbw.url }}"
+                }
+            }
+        }
+    ],
+    "data": {},
+    "transform": {},
+    "load": {
+        "params": {
+            "table_name": "dbw_variable_515",
+            "source_name": "{{ env.source_api.gus_dbw.source_name }}",
+            "zone": "{{ env.zones.landing }}"
+        }
+    }
+}
