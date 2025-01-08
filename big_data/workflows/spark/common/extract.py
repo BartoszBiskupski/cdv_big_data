@@ -107,7 +107,7 @@ class Extract_API:
                                     else:
                                         self.single_page(przekroj, rok, okres)
                             else:
-                                if page_check = True
+                                if page_check == True
                                     while page_check:
                                         page_check = self.page_turner(przekroj, rok)
                                 else:
