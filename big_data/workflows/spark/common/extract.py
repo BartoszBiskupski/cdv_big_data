@@ -101,27 +101,28 @@ class Extract_API:
                             if self.okres_list:
                                 for okres in self.okres_list:
                                     if self.page_no:
-                                        page_check == True
+                                        page_check = True
                                         while page_check:
                                             page_check = self.page_turner(przekroj, rok, okres)
                                     else:
                                         self.single_page(przekroj, rok, okres)
                             else:
-                                if page_check == True
+                                if self.page_no:
+                                    page_check = True
                                     while page_check:
                                         page_check = self.page_turner(przekroj, rok)
                                 else:
                                     self.single_page(przekroj, rok)
                     else:
                         if self.page_no:
-                            page_check == True
+                            page_check = True
                             while page_check:
                                 page_check = self.page_turner(przekroj)
                         else:
                             self.single_page(przekroj)
             else:
                 if self.page_no:
-                    page_check == True
+                    page_check = True
                     while page_check:
                         page_check = self.page_turner()
                 else:
