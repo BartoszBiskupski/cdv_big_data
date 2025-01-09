@@ -72,9 +72,9 @@ class Extract_API:
                 if line_count < 5000:
                     print(f"Less than 5000 records received. Stopping pagination.")
                     page_check = False
-                    time.sleep(15)  # Wait for 5 seconds
+                    time.sleep(10)  # Wait for 5 seconds
                     break
-                time.sleep(15)  # Wait for 5 seconds
+                time.sleep(10)  # Wait for 5 seconds
             else:
                 print(f"end of pages")
                 page_check = False
@@ -92,7 +92,7 @@ class Extract_API:
             dbutils = DBUtils(spark)
             dbutils.fs.put(path, response.text, overwrite=True)
             print(f"Saved data to {path}")
-            time.sleep(15)  # Wait for 5 seconds
+            time.sleep(10)  # Wait for 5 seconds
         else:
             print(f"end of pages")
             return False

@@ -1,7 +1,7 @@
 {
     "extract": [
         {
-            "name": "dbw_way_of_presentation_extract",
+            "name": "dbw_variable_469_extract",
             "collable": "big_data.workflows.spark.common.extract.Extract_API",
             "source": {
                 "params": {
