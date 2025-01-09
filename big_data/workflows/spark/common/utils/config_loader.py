@@ -44,7 +44,7 @@ class ExecutionContext:
             # print("Rendered config:", rendered_config)
 
             api_key = self.get_api_secret() # Replace with the actual API key
-
+        
  
             rendered_config = json.loads(rendered_config)
             rendered_config["api_key"] = api_key

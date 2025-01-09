@@ -2,6 +2,7 @@ import requests
 from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
 import datetime
 import time
+import os
 from pyspark.dbutils import DBUtils
 from pyspark.sql import SparkSession
 
@@ -26,7 +27,7 @@ class Extract_API:
         self.okres_list = self.extract_kwargs["source"]["params"]["id_okres_list"]
         self.zone = self.ec.config["load"]["params"]["zone"]
 
-        self.run_time = datetime.datetime.now().strftime("%Y-%m-%d")
+        self.run_time = "2025-01-09" #datetime.datetime.now().strftime("%Y-%m-%d")
         self.get_api_data()
         
     
@@ -72,11 +73,14 @@ class Extract_API:
                 if line_count < 5000:
                     print(f"Less than 5000 records received. Stopping pagination.")
                     page_check = False
-                    time.sleep(10)  # Wait for 5 seconds
+                    time.sleep(20)  # Wait for 5 seconds
                     break
-                time.sleep(10)  # Wait for 5 seconds
+                time.sleep(20)  # Wait for 5 seconds
             else:
                 print(f"Error {response.status_code}")
+                if response.status_code == 429:
+                    print("Too many requests. Waiting for 60 seconds.")
+                    time.sleep(60)
                 page_check = False
                 return page_check
     
@@ -92,7 +96,7 @@ class Extract_API:
             dbutils = DBUtils(spark)
             dbutils.fs.put(path, response.text, overwrite=True)
             print(f"Saved data to {path}")
-            time.sleep(10)  # Wait for 5 seconds
+            time.sleep(20)  # Wait for 5 seconds
         else:
             print(f"Error {response.status_code}")
             return False
@@ -142,4 +146,31 @@ class Extract_API:
         except Exception as e:
             print(f"Error: {e}")
 
+
+class Extract_CSV:
+    def __init__(self, ec, index):
+        self.ec = ec
+        self.extract_kwargs = {**self.ec.config["extract"][index]}
+        print(self.extract_kwargs)
+        self.name = self.extract_kwargs["name"]
+        self.header = self.extract_kwargs["params"]["header"]
+        self.landing = self.ec.config["load"]["params"]["landing"]
+        self.source_name = self.ec.config["load"]["params"]["source_name"]
+        self.file_name = self.ec.config["load"]["params"]["file_name"]
+        self.run_time = "2025-01-09" #hardcoded for one time run
+        self.get_csv_data()
+        
+    
+    def get_csv_data(self):
+        
+        try:
+            df_extract = (spark.read
+                            .format("csv")
+                            .load(f"{self.landing}{self.source_name}/{self.file_name}/run_time={self.run_time}/*.csv", header=self.header)
+            ec.update_config(f"{self.name}", df_extract)
+            print(f"Data extracted for {self.name} and added to ec")
+        except Exception as e:
+            print(f"Error: {e}")
+        
+)        
 
