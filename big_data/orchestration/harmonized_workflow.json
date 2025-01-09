@@ -1,5 +1,5 @@
 {
-    "name": "ingestion_workflow",
+    "name": "harmonized_workflow",
     "email_notifications": {
       "no_alert_for_skipped_runs": false
     },
@@ -32,7 +32,7 @@
         "task_key": "dbw_area",
         "depends_on": [
           {
-            "task_key": "ingestion_dependencies"
+            "task_key": "harmonized_dependencies"
           }
         ],
         "run_if": "ALL_SUCCESS",
