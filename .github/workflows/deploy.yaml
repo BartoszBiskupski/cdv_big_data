@@ -114,15 +114,15 @@ jobs:
                       if workflow in existing_workflows.keys():
                           job_id = existing_workflows[workflow]
                           response = requests.post(f'{databricks_host}/api/2.2/jobs/reset', headers=headers, 
-                                                  json={"job_id": job_id,
-                                                      "new_settings": orc_config
+                                                  json={'job_id': job_id,
+                                                      'new_settings': orc_config
                                                       })
                           response.raise_for_status()
-                          print(f"Updated job {workflow}")
+                          print(f'Updated job {workflow}')
                       else:
                           response = requests.post(f'{databricks_host}/api/2.2/jobs/create', headers=headers, json=orc_config)
                           response.raise_for_status()
-                          print(f"Created job {workflow}")
+                          print(f'Created job {workflow}')
                   except Exception as e:
                       print(e)
                 "
