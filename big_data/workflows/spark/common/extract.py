@@ -57,6 +57,8 @@ class Extract_API:
             # print(response.json())
             # Check the response status code and print the response
             if response.status_code == 200:
+                data = response.text
+                # Count the number of lines in the CSV response
                 print(f"Request was successful for page {page_no}.")
                 page_no += 1
                 path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}_{page_no}.csv"
@@ -65,6 +67,13 @@ class Extract_API:
                 dbutils.fs.put(path, response.text, overwrite=True)
                 print(f"Saved data to {path}")
                 page_check = True
+                line_count = len(data.splitlines())
+                if line_count < 5000:
+                    print(f"Less than 5000 records received. Stopping pagination.")
+                    page_check = False
+                    time.sleep(15)  # Wait for 5 seconds
+                    break
+                time.sleep(15)  # Wait for 5 seconds
             else:
                 print(f"end of pages")
                 page_check = False
@@ -82,6 +91,7 @@ class Extract_API:
             dbutils = DBUtils(spark)
             dbutils.fs.put(path, response.text, overwrite=True)
             print(f"Saved data to {path}")
+            time.sleep(15)  # Wait for 5 seconds
         else:
             print(f"end of pages")
             return False
@@ -99,13 +109,14 @@ class Extract_API:
                     if self.id_rok_list:
                         for rok in self.id_rok_list:
                             if self.okres_list:
-                                for okres in self.okres_list:
-                                    if self.page_no:
-                                        page_check = True
-                                        while page_check:
-                                            page_check = self.page_turner(przekroj, rok, okres)
-                                    else:
-                                        self.single_page(przekroj, rok, okres)
+                                for id_przekroj, okres_list in self.okres_list.items():
+                                    for okres in okres_list:
+                                        if self.page_no:
+                                            page_check = True
+                                            while page_check:
+                                                page_check = self.page_turner(przekroj, rok, okres)
+                                        else:
+                                            self.single_page(przekroj, rok, okres)
                             else:
                                 if self.page_no:
                                     page_check = True

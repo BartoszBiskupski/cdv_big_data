@@ -14,9 +14,11 @@
                     "id_przekroj_list": [
                         285
                     ],
-                    "id_okres_list": [
-                        282
-                    ],
+                    "id_okres_list": {
+                        "285": [
+                            282
+                        ]
+                    },
                     "id_rok_list": [
                         2010,
                         2011,
