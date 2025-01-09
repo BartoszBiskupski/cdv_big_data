@@ -62,7 +62,7 @@ class Extract_API:
                 # Count the number of lines in the CSV response
                 print(f"Request was successful for page {page_no}.")
                 page_no += 1
-                path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{rok}_{page_no}.csv"
+                path = f"{self.zone}{self.source_name}/{self.table_name}/run_time={self.run_time}/{self.name}_{przekroj}_{okres}_{rok}_{page_no}.csv"
                 spark = SparkSession.builder.getOrCreate()
                 dbutils = DBUtils(spark)
                 dbutils.fs.put(path, response.text, overwrite=True)
@@ -76,7 +76,7 @@ class Extract_API:
                     break
                 time.sleep(10)  # Wait for 5 seconds
             else:
-                print(f"end of pages")
+                print(f"Error {response.status_code}")
                 page_check = False
                 return page_check
     
@@ -94,7 +94,7 @@ class Extract_API:
             print(f"Saved data to {path}")
             time.sleep(10)  # Wait for 5 seconds
         else:
-            print(f"end of pages")
+            print(f"Error {response.status_code}")
             return False
 
     def get_api_data(self):
