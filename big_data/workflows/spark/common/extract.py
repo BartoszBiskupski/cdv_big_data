@@ -167,10 +167,11 @@ class Extract_CSV:
             df_extract = (spark.read
                             .format("csv")
                             .load(f"{self.landing}{self.source_name}/{self.file_name}/run_time={self.run_time}/*.csv", header=self.header)
+            )
             ec.update_config(f"{self.name}", df_extract)
             print(f"Data extracted for {self.name} and added to ec")
         except Exception as e:
             print(f"Error: {e}")
         
-)        
+        
 
