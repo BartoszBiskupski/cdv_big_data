@@ -1,7 +1,7 @@
 {
     "extract": [{
         "name": "dbw_variables_extract",
-        "collable": "big_data.workflows.spark.common.extract.ExtrExtract_DataFrameact_CSV",
+        "collable": "big_data.workflows.spark.common.extract.Extract_DataFrame",
         "source": {
             "params":
             {
@@ -13,7 +13,7 @@
         },
         {
             "name": "dbw_variable_section_position",
-            "collable": "big_data.workflows.spark.common.extract.ExtrExtract_DataFrameact_CSV",
+            "collable": "big_data.workflows.spark.common.extract.Extract_DataFrame",
             "source": {
                 "params":
                 {
