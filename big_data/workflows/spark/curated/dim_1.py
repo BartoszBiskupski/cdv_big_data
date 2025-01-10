@@ -9,10 +9,13 @@ def transform(ec):
     df_variables = ec.config["data"]["dbw_variables_extract"]
     df_variable_section_position = ec.config["data"]["dbw_variable_section_position"]
     
-    join_cond = ["var.id_wymiar_1 == sec.id_wymiar", "var.id_pozycja_1 == sec.id_pozycja"]
-    
-    df_transform = (df_variables.alias("var").
-                    join(df_variable_section_position.alias("sec"), join_cond, "left")
+    join_cond = [
+        F.col("var.id_wymiar_1") == F.col("sec.id_wymiar"),
+        F.col("var.id_pozycja_1") == F.col("sec.id_pozycja"),
+    ]
+
+    df_transform = (df_variables
+                    .join(df_variable_section_position, join_cond, "left")
                     .filter(F.col("sec.id_wymiar").isNotNull())
                     .select(
                         F.col("var.id_wymiar_1").alias("id_wymiar"),
@@ -22,6 +25,5 @@ def transform(ec):
                     )
                     ).distinct()
     df_transform = df_transform.withColumn("id_dim_1", F.concat(F.col("id_wymiar"), F.col("id_pozycja")))
-    
     ec.update_config("df_transform", df_transform)
     print(f"Added df_transform to the config")

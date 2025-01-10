@@ -22,7 +22,7 @@ job = params["job_name"].split("_")[0]
 env_path = f"/Workspace/cdv_big_data/big_data/enviroment/env.{environment}.json"
 
 task_name = params["task_name"]
-# load json config file for area task
+# load json config file for the task
 config_path = f"/Workspace/cdv_big_data/big_data/workflows/config/{job}/{task_name}.json"
 
 # COMMAND ----------
