@@ -49,22 +49,27 @@ class Load_API:
         
 class Load_DataFrame:
     def __init__(self, ec):
-        self.df_input = ec.config.get(["data"]["df_transform"], ["data"][ec.config["extract"][0]["name"]])
-        self.schema = ec.config["load"]["source_name"]
+        self.df_extract_name = ec.config["extract"][0]["name"]
+        self.df_extract = ec.config["data"][self.df_extract_name]
+        self.data = ec.config["data"]
+        self.harmonized = ec.config
+        self.df_input = self.data.get("df_transform", self.df_extract)
+        self.source_name = ec.config["load"]["params"]["source_name"]
         self.table_name = ec.config["load"]["params"]["table_name"]
-        self.base_uri = ec.config["load"]["params"]["uri"]
+        self.base_uri = ec.config["load"]["params"]["base_uri"]
         self.catalog = ec.config["load"]["params"]["catalog"]
         self.format = ec.config["load"]["params"]["format"]
         self.full_load = ec.config["load"]["params"]["full_load"]
         self.run_time = "2025-01-09" #hardcoded for now
         self.spark = SparkSession.builder.getOrCreate()
-        self.save_to_adls = self.save_to_adls()
-
-        self.full_table_name = f"{self.catalog}.{self.schema}_{self.table_name}"
-        self.full_uri = f"{self.base_uri}{self.source_name}/{self.table_name}/"
-
-    def save_to_adls(self):
         
+
+        self.full_table_name = f"{self.catalog}.{self.source_name}.{self.table_name}"
+        print(self.full_table_name)
+        self.full_uri = f"{self.base_uri}{self.source_name}/{self.table_name}/"
+        self.save_to_adls = self.save_to_adls()
+    def save_to_adls(self):
+
         if not self.df_input:
             raise ValueError("The provided df_input is empty.")
         
@@ -79,13 +84,14 @@ class Load_DataFrame:
         
         if "snapshot_date" not in self.df_input.columns:
             snapshot_date = self.run_time
-            df_final = (df_final
+            df_final = (self.df_input
                     .withColumn("snapshot_date", lit(snapshot_date))
                         )
+        print(f"CREATE SCHEMA IF NOT EXISTS {self.catalog}.{self.source_name} MANAGED LOCATION `{self.base_uri}`")
+        self.spark.sql(f"CREATE SCHEMA IF NOT EXISTS {self.catalog}.{self.source_name} MANAGED LOCATION '{self.base_uri}'")
         # Write DataFrame to ADLS
         (df_final.write
             .saveAsTable(self.full_table_name, **writer_kwargs)
         )
-        print(f"Table {self.full_table_name} saved to {file_path}")
-    
+        print(f"Table {self.full_table_name} saved to {self.full_uri}")
         

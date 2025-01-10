@@ -73,9 +73,9 @@ class Extract_API:
                 if line_count < 5000:
                     print(f"Less than 5000 records received. Stopping pagination.")
                     page_check = False
-                    time.sleep(20)  # Wait for 5 seconds
+                    time.sleep(10)  # Wait for 5 seconds
                     break
-                time.sleep(20)  # Wait for 5 seconds
+                time.sleep(10)  # Wait for 5 seconds
             else:
                 print(f"Error {response.status_code}")
                 if response.status_code == 429:
@@ -96,7 +96,7 @@ class Extract_API:
             dbutils = DBUtils(spark)
             dbutils.fs.put(path, response.text, overwrite=True)
             print(f"Saved data to {path}")
-            time.sleep(20)  # Wait for 5 seconds
+            time.sleep(10)  # Wait for 5 seconds
         else:
             print(f"Error {response.status_code}")
             return False
@@ -153,22 +153,26 @@ class Extract_CSV:
         self.extract_kwargs = {**self.ec.config["extract"][index]}
         print(self.extract_kwargs)
         self.name = self.extract_kwargs["name"]
-        self.header = self.extract_kwargs["params"]["header"]
-        self.landing = self.ec.config["load"]["params"]["landing"]
-        self.source_name = self.ec.config["load"]["params"]["source_name"]
-        self.file_name = self.ec.config["load"]["params"]["file_name"]
-        self.run_time = "2025-01-09" #hardcoded for one time run
+        self.header = self.extract_kwargs["source"]["params"]["header"]
+        self.landing = self.extract_kwargs["source"]["params"]["landing"]
+        self.source_name = self.extract_kwargs["source"]["params"]["source_name"]
+        self.file_name = self.extract_kwargs["source"]["params"]["file_name"]
+        self.run_time = "*" #hardcoded for one time run
         self.get_csv_data()
         
     
     def get_csv_data(self):
-        
+        spark = SparkSession.builder.getOrCreate()
         try:
+            # df_extract = (spark.read
+            #                 .format("csv")
+            #                 .load(f"{self.landing}{self.source_name}/{self.file_name}/run_time={self.run_time}/*.csv", header=self.header)
+            # ).distinct()
             df_extract = (spark.read
                             .format("csv")
-                            .load(f"{self.landing}{self.source_name}/{self.file_name}/run_time={self.run_time}/*.csv", header=self.header)
-            )
-            ec.update_config(f"{self.name}", df_extract)
+                            .load(f"{self.landing}{self.source_name}/{self.file_name}/*/*.csv", header=self.header)
+            ).distinct()
+            self.ec.update_config(f"{self.name}", df_extract)
             print(f"Data extracted for {self.name} and added to ec")
         except Exception as e:
             print(f"Error: {e}")

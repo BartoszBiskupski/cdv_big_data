@@ -7,7 +7,7 @@
             {
                 "landing": "{{ env.zones.landing }}",
                 "source_name": "{{ env.source_api.gus_dbw.source_name }}",
-                "file_name": "dbw_area.csv",
+                "file_name": "dbw_area",
                 "header": true
                 }   
             }
@@ -21,13 +21,13 @@
 
     "load": {
         "name": "dbw_area_load",
-        "collable": "big_data.workflows.spark.common.load.Load_Dataframe",
+        "collable": "big_data.workflows.spark.common.load.Load_DataFrame",
         "params":{
             "catalog": "{{ env.catalogs.default }}",
             "table_name": "dbw_area",
             "format": "delta",
             "source_name": "{{ env.source_api.gus_dbw.source_name }}",
-            "base_uri": "{{ env.zones.harmonized }}reference/",
+            "base_uri": "{{ env.zones.harmonized }}harmonized/",
             "full_load": true,
             "partition_column": false
         }
