@@ -48,6 +48,69 @@
         "timeout_seconds": 3600,
         "email_notifications": {},
         "webhook_notifications": {}
+      },
+      {
+        "task_key": "dim_2",
+        "depends_on": [
+          {
+            "task_key": "curated_dependencies"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
+          "base_parameters": {
+            "job_name": "{{job.name}}",
+            "task_name": "{{task.name}}"
+          },
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "timeout_seconds": 3600,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "dim_3",
+        "depends_on": [
+          {
+            "task_key": "curated_dependencies"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
+          "base_parameters": {
+            "job_name": "{{job.name}}",
+            "task_name": "{{task.name}}"
+          },
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "timeout_seconds": 3600,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "dim_4",
+        "depends_on": [
+          {
+            "task_key": "curated_dependencies"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/cdv_big_data/big_data/workflows/spark/common/utils/big_data_runner",
+          "base_parameters": {
+            "job_name": "{{job.name}}",
+            "task_name": "{{task.name}}"
+          },
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "1229-175704-1ld2l8e2",
+        "timeout_seconds": 3600,
+        "email_notifications": {},
+        "webhook_notifications": {}
       }
     ],
     "queue": {

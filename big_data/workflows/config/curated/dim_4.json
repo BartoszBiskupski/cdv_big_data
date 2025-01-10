@@ -1,33 +1,46 @@
 {
     "extract": [{
-        "name": "ddbw_variables_extract",
-        "collable": "big_data.workflows.spark.common.extract.Extract_CSV",
+        "name": "dbw_variables_extract",
+        "collable": "big_data.workflows.spark.common.extract.Extract_DataFrame",
         "source": {
             "params":
             {
-                "landing": "{{ env.zones.landing }}",
-                "source_name": "{{ env.source_api.gus_dbw.source_name }}",
-                "file_name": "{dbw_variable_[0-9]*}",
-                "header": true
+                "catalog": "{{ env.catalogs.default }}",
+                "db_name": "gus_dbw",
+                "table_name": "dbw_variables"
                 }   
             }
-        }
+        },
+        {
+            "name": "dbw_variable_section_position",
+            "collable": "big_data.workflows.spark.common.extract.Extract_DataFrame",
+            "source": {
+                "params":
+                {
+                    "catalog": "{{ env.catalogs.default }}",
+                    "db_name": "gus_dbw",
+                    "table_name": "dbw_variable_section_position"
+                    }   
+                }
+            }
     ],
     "data": {
         
     },
     "transform": {
+        "name": "dbw_dim_4_transform",
+        "collable": "big_data.workflows.spark.curated.dim_4.transform"
     },
 
     "load": {
-        "name": "dbw_variables_load",
+        "name": "dim_4_load",
         "collable": "big_data.workflows.spark.common.load.Load_DataFrame",
         "params":{
             "catalog": "{{ env.catalogs.default }}",
-            "table_name": "dbw_variables",
+            "table_name": "dim_4",
             "format": "delta",
-            "source_name": "{{ env.source_api.gus_dbw.source_name }}",
-            "base_uri": "{{ env.zones.harmonized }}harmonized/",
+            "source_name": "curated",
+            "base_uri": "{{ env.zones.curated }}curated/",
             "full_load": true,
             "partition_column": false
         }

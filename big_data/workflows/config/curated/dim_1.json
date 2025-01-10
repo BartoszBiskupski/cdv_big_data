@@ -33,7 +33,7 @@
     },
 
     "load": {
-        "name": "dbw_variables_load",
+        "name": "dim_1_load",
         "collable": "big_data.workflows.spark.common.load.Load_DataFrame",
         "params":{
             "catalog": "{{ env.catalogs.default }}",
