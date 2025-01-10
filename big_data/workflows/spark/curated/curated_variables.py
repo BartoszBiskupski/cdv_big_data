@@ -13,7 +13,7 @@ def transform(ec):
                     .withColumn("id_dim_2", F.concat(F.col("id_wymiar_2"), F.col("id_pozycja_2")))
                     .withColumn("id_dim_3", F.concat(F.col("id_wymiar_3"), F.col("id_pozycja_3")))
                     .withColumn("id_dim_4", F.concat(F.col("id_wymiar_4"), F.col("id_pozycja_4")))
-                    select(
+                    .select(
                         F.col("id_zmienna").alias("id_zmienna"),
                         F.col("id_przekroj").alias("id_przekroj"),
                         F.col("id_dim_1").alias("id_dim_1"),
