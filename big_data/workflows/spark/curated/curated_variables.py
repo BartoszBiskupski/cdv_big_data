@@ -8,7 +8,7 @@ def transform(ec):
     
     df_variables = ec.config["data"]["dbw_variables_extract"]
     
-    df_transform = (df_variables.
+    df_transform = (df_variables
                     .withColumn("id_dim_1", F.concat(F.col("id_wymiar_1"), F.col("id_pozycja_1")))
                     .withColumn("id_dim_2", F.concat(F.col("id_wymiar_2"), F.col("id_pozycja_2")))
                     .withColumn("id_dim_3", F.concat(F.col("id_wymiar_3"), F.col("id_pozycja_3")))
