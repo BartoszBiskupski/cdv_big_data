@@ -175,6 +175,28 @@ class Extract_CSV:
             print(f"Data extracted for {self.name} and added to ec")
         except Exception as e:
             print(f"Error: {e}")
+            
+class Extract_DataFrame:
+    def __init__(self, ec, index):
+        self.ec = ec
+        self.extract_kwargs = {**self.ec.config["extract"][index]}
+        print(self.extract_kwargs)
+        self.name = self.extract_kwargs["name"]
+        self.catalog = self.extract_kwargs["source"]["params"]["catalog"]
+        self.db_name = self.extract_kwargs["source"]["params"]["db_name"]
+        self.table_name = self.extract_kwargs["source"]["params"]["table_name"]
+        self.get_df()
+        
+    
+    def get_df(self):
+        spark = SparkSession.builder.getOrCreate()
+        try:
+            df_extract = (spark.table(f"{self.catalog}.{self.db_name}.{self.table_name}")
+            )
+            self.ec.update_config(f"{self.name}", df_extract)
+            print(f"Data extracted for {self.name} and added to ec")
+        except Exception as e:
+            print(f"Error: {e}")
         
         
 

@@ -1,0 +1,49 @@
+{
+    "extract": [{
+        "name": "dbw_variables_extract",
+        "collable": "big_data.workflows.spark.common.extract.ExtrExtract_DataFrameact_CSV",
+        "source": {
+            "params":
+            {
+                "catalog": "{{ env.catalogs.default }}",
+                "db_name": "gus_dbw",
+                "table_name": "dbw_variables"
+                }   
+            }
+        },
+        {
+            "name": "dbw_variable_section_position",
+            "collable": "big_data.workflows.spark.common.extract.ExtrExtract_DataFrameact_CSV",
+            "source": {
+                "params":
+                {
+                    "catalog": "{{ env.catalogs.default }}",
+                    "db_name": "gus_dbw",
+                    "table_name": "dbw_variable_section_position"
+                    }   
+                }
+            }
+    ],
+    "data": {
+        
+    },
+    "transform": {
+        "name": "dbw_dim_1_transform",
+        "collable": "big_data.workflows.spark.curated.dim_1.transform"
+    },
+
+    "load": {
+        "name": "dbw_variables_load",
+        "collable": "big_data.workflows.spark.common.load.Load_DataFrame",
+        "params":{
+            "catalog": "{{ env.catalogs.default }}",
+            "table_name": "dim_1",
+            "format": "delta",
+            "source_name": "{{ env.source_api.gus_dbw.source_name }}",
+            "base_uri": "{{ env.zones.curated }}curated/",
+            "full_load": true,
+            "partition_column": false
+        }
+
+    }
+}
