@@ -1,5 +1,5 @@
 {
-    "name": "harmonized_workflow",
+    "name": "curated_workflow",
     "email_notifications": {
       "no_alert_for_skipped_runs": false
     },
