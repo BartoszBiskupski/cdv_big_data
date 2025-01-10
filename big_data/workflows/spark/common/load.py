@@ -74,12 +74,14 @@ class Load_DataFrame:
             raise ValueError("The provided df_input is empty.")
         
         writer_kwargs = {"format": self.format,
-                         "path": self.full_uri
-                         }
+                        "path": self.full_uri
+                        }
         if self.full_load:
             writer_kwargs["mode"] = "overwrite"
         else:
             writer_kwargs["mode"] = "append"
+        
+        print(f"Writing kwargs:  {writer_kwargs}")
         
         
         if "snapshot_date" not in self.df_input.columns:
