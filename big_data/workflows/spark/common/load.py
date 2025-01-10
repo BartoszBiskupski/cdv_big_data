@@ -91,6 +91,7 @@ class Load_DataFrame:
         self.spark.sql(f"CREATE SCHEMA IF NOT EXISTS {self.catalog}.{self.source_name} MANAGED LOCATION '{self.base_uri}'")
         # Write DataFrame to ADLS
         (df_final.write
+            .coalesce(1)
             .saveAsTable(self.full_table_name, **writer_kwargs)
         )
         print(f"Table {self.full_table_name} saved to {self.full_uri}")
