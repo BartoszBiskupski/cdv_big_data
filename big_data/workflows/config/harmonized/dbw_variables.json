@@ -7,7 +7,7 @@
             {
                 "landing": "{{ env.zones.landing }}",
                 "source_name": "{{ env.source_api.gus_dbw.source_name }}",
-                "file_name": "dbw_variable_*",
+                "file_name": "{dbw_variable_[0-9]*}",
                 "header": true
                 }   
             }
