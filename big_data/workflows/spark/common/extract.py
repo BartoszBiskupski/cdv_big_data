@@ -107,21 +107,20 @@ class Extract_API:
             "Authorization": f"Bearer {self.api_key}",
             "Accept": "text/csv"
         }
-
         try:
             if self.id_przekroj_list:
                 for przekroj in self.id_przekroj_list:
                     if self.id_rok_list:
                         for rok in self.id_rok_list:
                             if self.okres_list:
-                                for id_przekroj, okres_list in self.okres_list.items():
-                                    for okres in okres_list:
-                                        if self.page_no:
-                                            page_check = True
-                                            while page_check:
-                                                page_check = self.page_turner(przekroj, rok, okres)
-                                        else:
-                                            self.single_page(przekroj, rok, okres)
+                                okres_list = self.okres_list[str(przekroj)]
+                                for okres in okres_list:
+                                    if self.page_no:
+                                        page_check = True
+                                        while page_check:
+                                            page_check = self.page_turner(przekroj, rok, okres)
+                                    else:
+                                        self.single_page(przekroj, rok, okres)
                             else:
                                 if self.page_no:
                                     page_check = True
