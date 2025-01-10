@@ -1,0 +1,37 @@
+{
+    "extract": [{
+        "name": "dbw_variables_extract",
+        "collable": "big_data.workflows.spark.common.extract.Extract_DataFrame",
+        "source": {
+            "params":
+            {
+                "catalog": "{{ env.catalogs.default }}",
+                "db_name": "gus_dbw",
+                "table_name": "dbw_variables"
+                }   
+            }
+        }
+    ],
+    "data": {
+        
+    },
+    "transform": {
+        "name": "curated_variables_transform",
+        "collable": "big_data.workflows.spark.curated.curated_variables.transform"
+    },
+
+    "load": {
+        "name": "curated_variables_load",
+        "collable": "big_data.workflows.spark.common.load.Load_DataFrame",
+        "params":{
+            "catalog": "{{ env.catalogs.default }}",
+            "table_name": "curated_variables",
+            "format": "delta",
+            "source_name": "curated",
+            "base_uri": "{{ env.zones.curated }}curated/",
+            "full_load": true,
+            "partition_column": false
+        }
+
+    }
+}
