@@ -74,7 +74,8 @@ class Load_DataFrame:
             raise ValueError("The provided df_input is empty.")
         
         writer_kwargs = {"format": self.format,
-                        "path": self.full_uri
+                        "path": self.full_uri,
+                        "overwriteSchema": "true",
                         }
         if self.full_load:
             writer_kwargs["mode"] = "overwrite"
