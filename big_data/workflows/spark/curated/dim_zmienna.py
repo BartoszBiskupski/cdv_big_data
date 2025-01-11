@@ -12,7 +12,7 @@ def transform(ec):
     df_transform = (df_periods.alias("per")
                     .withColumn("id_dim_zmienna", F.concat(F.col("id_zmienna"), F.col("id_przekroj"), F.col("id_okres")).cast("string"))
                     .select(
-                        F.col("per.id_dim_zmienna").cast("string").alias("id_dim_zmienna"),
+                        F.col("id_dim_zmienna").cast("string").alias("id_dim_zmienna"),
                         F.col("per.id_zmienna").cast("string").alias("id_zmienna"),
                         F.col("per.nazwa_zmienna").cast("string").alias("nazwa_zmienna"),
                         F.col("per.id_przekroj").cast("string").alias("id_przekroj"),
