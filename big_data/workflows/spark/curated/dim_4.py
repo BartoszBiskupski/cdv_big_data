@@ -18,8 +18,8 @@ def transform(ec):
                     .join(df_variables.alias("var"), join_cond, "left")
                     .filter(F.col("var.id_wymiar_4").isNotNull())
                     .select(
-                        F.col("var.id_wymiar_4").cast("int").alias("id_wymiar"),
-                        F.col("var.id_pozycja_4").cast("int").alias("id_pozycja"),
+                        F.col("var.id_wymiar_4").cast("string").alias("id_wymiar"),
+                        F.col("var.id_pozycja_4").cast("string").alias("id_pozycja"),
                         F.col("sec.nazwa_wymiar").cast("string").alias("nazwa_wymiar"),
                         F.col("sec.nazwa_pozycja").cast("string").alias("nazwa_pozycja"),
                     )
