@@ -14,9 +14,9 @@ def transform(ec):
         F.col("var.id_pozycja_2") == F.col("sec.id_pozycja"),
     ]
 
-    df_transform = (df_variables.alias("var")
-                    .join(df_variable_section_position.alias("sec"), join_cond, "left")
-                    .filter(F.col("sec.id_wymiar").isNotNull())
+    df_transform = (df_variable_section_position.alias("sec")
+                    .join(df_variables.alias("var"), join_cond, "left")
+                    .filter(F.col("var.id_wymiar_2").isNotNull())
                     .select(
                         F.col("var.id_wymiar_2").cast("int").alias("id_wymiar"),
                         F.col("var.id_pozycja_2").cast("int").alias("id_pozycja"),
