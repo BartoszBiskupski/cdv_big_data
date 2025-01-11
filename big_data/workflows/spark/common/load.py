@@ -93,7 +93,7 @@ class Load_DataFrame:
         print(f"CREATE SCHEMA IF NOT EXISTS {self.catalog}.{self.source_name} MANAGED LOCATION `{self.base_uri}`")
         self.spark.sql(f"CREATE SCHEMA IF NOT EXISTS {self.catalog}.{self.source_name} MANAGED LOCATION '{self.base_uri}'")
         # Write DataFrame to ADLS
-        df_final = df_final.repartition(1)
+        df_final = df_final.coalesce(1)
         (df_final.write
             .saveAsTable(self.full_table_name, **writer_kwargs)
         )
