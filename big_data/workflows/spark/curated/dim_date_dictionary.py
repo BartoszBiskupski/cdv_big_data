@@ -11,7 +11,7 @@ def transform(ec):
   
     df_transform = (df_periods.alias("date")
                     .select(
-                        F.col("date.id_rok").cast("int").alias("id_zmienna")
+                        F.col("date.id_rok").cast("int").alias("id_rok")
                     )
                     ).distinct()
     
