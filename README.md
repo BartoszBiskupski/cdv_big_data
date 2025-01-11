@@ -23,11 +23,7 @@ cdv_big_data is a project focused on processing and analyzing large datasets usi
     ```
 
 ## Usage
-1. Run the main script:
-    ```sh
-    python main.py
-    ```
-2. Follow the instructions provided in the terminal output.
+TODO
 
 ## Contributing
 1. Fork the repository.
