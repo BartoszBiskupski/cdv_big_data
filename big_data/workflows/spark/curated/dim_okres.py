@@ -11,13 +11,13 @@ def transform(ec):
   
     df_transform = (df_periods.alias("per")
                     .select(
-                        F.col("per.id_okres").alias("id_okres"),
-                        F.col("per.symbol").alias("symbol"),
-                        F.col("per.opis").alias("opis"),
-                        F.col("per.id_czestotliwosc").alias("id_czestotliwosc"),
-                        F.col("per.nazwa_czestotliwosc").alias("nazwa_czestotliwosc"),
-                        F.col("per.id_typ").alias("id_typ"),
-                        F.col("per.nazwa_typ").alias("nazwa_typ")
+                        F.col("per.id_okres").cast("int").alias("id_okres"),
+                        F.col("per.symbol").cast("string").alias("symbol"),
+                        F.col("per.opis").cast("string").alias("opis"),
+                        F.col("per.id_czestotliwosc").cast("int").alias("id_czestotliwosc"),
+                        F.col("per.nazwa_czestotliwosc").cast("string").alias("nazwa_czestotliwosc"),
+                        F.col("per.id_typ").cast("int").alias("id_typ"),
+                        F.col("per.nazwa_typ").cast("string").alias("nazwa_typ")
                     )
                     ).distinct()
     

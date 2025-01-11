@@ -11,8 +11,8 @@ def transform(ec):
   
     df_transform = (df_periods.alias("per")
                     .select(
-                        F.col("per.id_przekroj").alias("id_przekroj"),
-                        F.col("per.nazwa_przekroj").alias("nazwa_przekroj")
+                        F.col("per.id_przekroj").cast("int").alias("id_przekroj"),
+                        F.col("per.nazwa_przekroj").cast("string").alias("nazwa_przekroj")
                     )
                     ).distinct()
     

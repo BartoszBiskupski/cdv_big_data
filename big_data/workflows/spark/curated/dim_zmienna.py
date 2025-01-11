@@ -11,8 +11,8 @@ def transform(ec):
   
     df_transform = (df_periods.alias("per")
                     .select(
-                        F.col("per.id_zmienna").alias("id_zmienna"),
-                        F.col("per.nazwa_zmienna").alias("nazwa_zmienna")
+                        F.col("per.id_zmienna").cast("int").alias("id_zmienna"),
+                        F.col("per.nazwa_zmienna").cast("string").alias("nazwa_zmienna")
                     )
                     ).distinct()
     

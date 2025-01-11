@@ -16,19 +16,19 @@ def transform(ec):
                     .select(
                         F.col("id_zmienna").alias("id_zmienna"),
                         F.col("id_przekroj").alias("id_przekroj"),
-                        F.col("id_dim_1").alias("id_dim_1"),
-                        F.col("id_dim_2").alias("id_dim_2"),
-                        F.col("id_dim_3").alias("id_dim_3"),
-                        F.col("id_dim_4").alias("id_dim_4"),
-                        F.col("id_okres").alias("id_okres"),
-                        F.col("id_sposob_prezentacji_miara").alias("id_sposob_prezentacji_miara"),
-                        F.col("id_daty").alias("id_daty"),
-                        F.col("id_brak_wartosci").alias("id_brak_wartosci"),
-                        F.col("id_tajnosci").alias("id_tajnosci"),
-                        F.col("id_flaga").alias("id_flaga"),
-                        F.col("wartosc").alias("wartosc"),
-                        F.col("wartosc_opisowa").alias("wartosc_opisowa"),
-                        F.col("precyzja").alias("precyzja")                       
+                        F.col("id_dim_1").cast("int").alias("id_dim_1"),
+                        F.col("id_dim_2").cast("int").alias("id_dim_2"),
+                        F.col("id_dim_3").cast("int").alias("id_dim_3"),
+                        F.col("id_dim_4").cast("int").alias("id_dim_4"),
+                        F.col("id_okres").cast("int").alias("id_okres"),
+                        F.col("id_sposob_prezentacji_miara").cast("int").alias("id_sposob_prezentacji_miara"),
+                        F.col("id_daty").cast("int").alias("id_daty"),
+                        F.col("id_brak_wartosci").cast("int").alias("id_brak_wartosci"),
+                        F.col("id_tajnosci").cast("int").alias("id_tajnosci"),
+                        F.col("id_flaga").cast("int").alias("id_flaga"),
+                        F.col("wartosc").cast("long").alias("wartosc"),
+                        F.col("wartosc_opisowa").cast("string").alias("wartosc_opisowa"),
+                        F.col("precyzja").cast("string").alias("precyzja")                       
                     )
     )
     ec.update_config("df_transform", df_transform)
