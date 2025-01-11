@@ -8,16 +8,20 @@ def transform(ec):
     
     df_variables = ec.config["data"]["dbw_variables_extract"]
     
+    df_variables = spark.table("cdv_big_data_adb.gus_dbw.dbw_variables")
+        
     df_transform = (df_variables
-                    .withColumn("id_dim_1", F.concat(F.col("id_wymiar_1"), F.col("id_pozycja_1")).cast("bigint"))
-                    .withColumn("id_dim_2", F.concat(F.col("id_wymiar_2"), F.col("id_pozycja_2")).cast("bigint"))
-                    .withColumn("id_dim_3", F.concat(F.col("id_wymiar_3"), F.col("id_pozycja_3")).cast("bigint"))
-                    .withColumn("id_dim_4", F.concat(F.col("id_wymiar_4"), F.col("id_pozycja_4")).cast("bigint"))
+                    .withColumn("id_dim_1", F.concat(F.col("id_wymiar_1"), F.col("id_pozycja_1")).cast("string"))
+                    .withColumn("id_dim_2", F.concat(F.col("id_wymiar_2"), F.col("id_pozycja_2")).cast("string"))
+                    .withColumn("id_dim_3", F.concat(F.col("id_wymiar_3"), F.col("id_pozycja_3")).cast("string"))
+                    .withColumn("id_dim_4", F.concat(F.col("id_wymiar_4"), F.col("id_pozycja_4")).cast("string"))
+                    .withColumn("id_dim_zmienna", F.concat(F.col("id_zmienna"), F.col("id_przekroj"), F.col("id_okres")).cast("string"))
                     .select(
                         F.col("id_zmienna").alias("id_zmienna"),
+                        F.col("id_dim_zmienna").alias("id_dim_zmienna"),
                         F.col("id_przekroj").alias("id_przekroj"),
                         F.col("id_dim_1").cast("int").alias("id_dim_1"),
-                        F.col("id_dim_2").cast("int").alias("id_dim_2"),
+                        F.col("id_dim_2").alias("id_dim_2"),
                         F.col("id_dim_3").cast("int").alias("id_dim_3"),
                         F.col("id_dim_4").cast("int").alias("id_dim_4"),
                         F.col("id_okres").cast("int").alias("id_okres"),

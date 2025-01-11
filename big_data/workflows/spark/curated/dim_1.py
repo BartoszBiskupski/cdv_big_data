@@ -24,6 +24,6 @@ def transform(ec):
                         F.col("sec.nazwa_pozycja").cast("string").alias("nazwa_pozycja"),
                     )
                     ).distinct()
-    df_transform = df_transform.withColumn("id_dim_1", F.concat(F.col("id_wymiar"), F.col("id_pozycja")).cast("bigint"))
+    df_transform = df_transform.withColumn("id_dim_1", F.concat(F.col("id_wymiar"), F.col("id_pozycja")).cast("string"))
     ec.update_config("df_transform", df_transform)
     print(f"Added df_transform to the config")
