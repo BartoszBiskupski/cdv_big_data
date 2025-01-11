@@ -17,8 +17,7 @@ def transform(ec):
                         F.col("per.nazwa_zmienna").cast("string").alias("nazwa_zmienna"),
                         F.col("per.id_przekroj").cast("string").alias("id_przekroj"),
                         F.col("per.nazwa_przekroj").cast("string").alias("nazwa_przekroj"),
-                        F.col("per.id_okres").cast("string").alias("id_okres"),
-                        F.col("per.nazwa_okres").cast("string").alias("nazwa_okres")
+                        F.col("per.id_okres").cast("string").alias("id_okres")
                     )
                     ).distinct()
     
