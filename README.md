@@ -33,6 +33,7 @@ cdv_big_data is a project focused on processing and analyzing large datasets usi
 - consumption layer with proper dimentions
 - add scd2 extract/load functionality
 - logger for ingestion / ETL 
+- permission groups Azure/ ADB / pipeline to deploy the permissions & add ppl
 
 
 ## Contributing
