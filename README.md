@@ -4,9 +4,10 @@
 cdv_big_data is a project focused on processing and analyzing large datasets using various big data technologies and tools.
 
 ## Prerequisites
-- Python 3.x
+- Python 3.x / pyspark / SQL
 - Apache Spark
 - Hadoop
+- Databricks
 
 ## Installation
 1. Clone the repository:
