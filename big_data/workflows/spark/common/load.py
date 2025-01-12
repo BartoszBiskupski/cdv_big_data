@@ -6,6 +6,9 @@ from pyspark.sql.functions import lit
 from big_data.workflows.spark.common.utils.config_loader import ExecutionContext
 
 class Load_API:
+    """
+    depreciated
+    """
     def __init__(self, ec):
         self.zone = ec.config["load"]["params"]["zone"]
         self.df_input = ec.config["data"]["df_transform"]
@@ -48,12 +51,38 @@ class Load_API:
         print(f"Data saved to {file_path}")
         
 class Load_DataFrame:
+    """
+    A class that represents the process of loading a DataFrame into a specified location.
+
+    Args:
+        ec (object): An object that contains the configuration settings.
+
+    Attributes:
+        df_extract_name (str): The name of the DataFrame extract.
+        df_extract (DataFrame): The DataFrame extract.
+        data (dict): The data configuration settings.
+        harmonized (dict): The harmonized configuration settings.
+        df_input (DataFrame): The input DataFrame to be loaded.
+        source_name (str): The name of the data source.
+        table_name (str): The name of the table.
+        base_uri (str): The base URI for the location.
+        catalog (str): The catalog name.
+        format (str): The format of the data.
+        full_load (bool): Indicates whether to perform a full load or append to existing data.
+        run_time (str): The run time of the process.
+        spark (SparkSession): The SparkSession object.
+
+    Methods:
+        save_to_adls: Saves the DataFrame to the specified location in ADLS.
+
+    """
+
     def __init__(self, ec):
         self.df_extract_name = ec.config["extract"][0]["name"]
         self.df_extract = ec.config["data"][self.df_extract_name]
         self.data = ec.config["data"]
         self.harmonized = ec.config
-        self.df_input = self.data.get("df_transform", self.df_extract)
+        self.df_input = self.data.get("df_transform", self.df_extract) # for tasks without transform step
         self.source_name = ec.config["load"]["params"]["source_name"]
         self.table_name = ec.config["load"]["params"]["table_name"]
         self.base_uri = ec.config["load"]["params"]["base_uri"]
@@ -62,14 +91,20 @@ class Load_DataFrame:
         self.full_load = ec.config["load"]["params"]["full_load"]
         self.run_time = "2025-01-09" #hardcoded for now
         self.spark = SparkSession.builder.getOrCreate()
-        
 
         self.full_table_name = f"{self.catalog}.{self.source_name}.{self.table_name}"
         print(self.full_table_name)
         self.full_uri = f"{self.base_uri}{self.source_name}/{self.table_name}/"
         self.save_to_adls = self.save_to_adls()
-    def save_to_adls(self):
 
+    def save_to_adls(self):
+        """
+        Saves the DataFrame to the specified location in ADLS as EXTERNAL table.
+
+        Raises:
+            ValueError: If the provided df_input is empty.
+
+        """
         if not self.df_input:
             raise ValueError("The provided df_input is empty.")
         
@@ -83,7 +118,6 @@ class Load_DataFrame:
             writer_kwargs["mode"] = "append"
         
         print(f"Writing kwargs:  {writer_kwargs}")
-        
         
         if "snapshot_date" not in self.df_input.columns:
             snapshot_date = self.run_time

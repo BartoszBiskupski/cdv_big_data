@@ -8,6 +8,16 @@ from pyspark.sql import SparkSession
 
 
 class Extract_API:
+    """
+    This class represents an API data extraction process from gus dbw api
+    https://api-dbw.stat.gov.pl/apidocs/index.html
+    
+    Args:
+        ec (object): An object representing the EC (execution context).
+        
+        index (int): The index of the extract configuration.
+    """
+    
     def __init__(self, ec, index):
         self.ec = ec
         self.extract_kwargs = {**self.ec.config["extract"][index]}
@@ -147,6 +157,19 @@ class Extract_API:
 
 
 class Extract_CSV:
+    """
+    A class that represents the extraction of CSV data.
+
+    Attributes:
+        ec (object): An object representing the execution context.
+        index (int): The index of the extract configuration.
+
+    Methods:
+        __init__(self, ec, index): Initializes the Extract_CSV object.
+        get_csv_data(self): Retrieves the CSV data using SparkSession.
+
+    """
+
     def __init__(self, ec, index):
         self.ec = ec
         self.extract_kwargs = {**self.ec.config["extract"][index]}
@@ -161,12 +184,15 @@ class Extract_CSV:
         
     
     def get_csv_data(self):
+        """
+        Retrieves the CSV data using SparkSession.
+
+        Returns:
+            None
+
+        """
         spark = SparkSession.builder.getOrCreate()
         try:
-            # df_extract = (spark.read
-            #                 .format("csv")
-            #                 .load(f"{self.landing}{self.source_name}/{self.file_name}/run_time={self.run_time}/*.csv", header=self.header)
-            # ).distinct()
             df_extract = (spark.read
                             .format("csv")
                             .load(f"{self.landing}{self.source_name}/{self.file_name}/*/*.csv", header=self.header)
@@ -177,6 +203,19 @@ class Extract_CSV:
             print(f"Error: {e}")
             
 class Extract_DataFrame:
+    """
+    A class that represents the extraction of data from a Spark DataFrame.
+
+    Attributes:
+        ec (object): The execution context object.
+        index (int): The index of the extraction configuration.
+
+    Methods:
+        __init__(self, ec, index): Initializes the Extract_DataFrame object.
+        get_df(self): Extracts the data from the specified table and updates the execution context.
+
+    """
+
     def __init__(self, ec, index):
         self.ec = ec
         self.extract_kwargs = {**self.ec.config["extract"][index]}
@@ -189,6 +228,13 @@ class Extract_DataFrame:
         
     
     def get_df(self):
+        """
+        Extracts the data from the specified table and updates the execution context.
+
+        Raises:
+            Exception: If there is an error during the extraction process.
+
+        """
         spark = SparkSession.builder.getOrCreate()
         try:
             df_extract = (spark.table(f"{self.catalog}.{self.db_name}.{self.table_name}")

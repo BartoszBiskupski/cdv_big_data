@@ -22,8 +22,17 @@ cdv_big_data is a project focused on processing and analyzing large datasets usi
     pip install -r requirements.txt
     ```
 
-## Usage
-TODO
+## USAGE
+- pulling data from GUS API: https://api-dbw.stat.gov.pl/apidocs/index.html
+- using env & task json - source and destination can be defined either azure or AWS (running script is defined as databricks notebook)
+- can be extsended to pull any other source 
+
+## TODO
+- incremental load (currnelty only historic load configured for period 2010-2022)
+- consumption layer with proper dimentions
+- add scd2 extract/load functionality
+- logger for ingestion / ETL 
+
 
 ## Contributing
 1. Fork the repository.
